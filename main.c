@@ -94,27 +94,28 @@ int     main(void)
     ft_sort_rooms(head_room);
     lem.size = ft_list_size(head_room);
     ft_make_matrix(head_room, &lem);
-    int counter;
-    counter = 0;
-    while (ft_present_path(&lem))
-    {
-        lem.found = 0;
-        ft_depth_first_search(&lem, 0, head_room);
-       if (head_path == NULL)
-           head_path = ft_create_path(&lem);
-       else
-       {
-       		t_path *kek = ft_append_path(head_path, &lem);
-       }
-        ft_clear_path(&lem);
-        counter++;
-    }
-    if (counter == 0)
-        ft_error();
-   ft_printf("\n");
-   ft_sort_path(head_path);
-   ft_print_list(head_path, &lem);
-    return (0);
+    ft_print_adjecency_matrix(&lem);
+   //  int counter;
+   //  counter = 0;
+   //  while (ft_present_path(&lem))
+   //  {
+   //      lem.found = 0;
+   //      ft_depth_first_search(&lem, 0, head_room);
+   //     if (head_path == NULL)
+   //         head_path = ft_create_path(&lem);
+   //     else
+   //     {
+   //     		t_path *kek = ft_append_path(head_path, &lem);
+   //     }
+   //      ft_clear_path(&lem);
+   //      counter++;
+   //  }
+   //  if (counter == 0)
+   //      ft_error();
+   // ft_printf("\n");
+   // ft_sort_path(head_path);
+   // ft_print_list(head_path, &lem);
+   return (0);
 }
 
 void    ft_clear_path(t_lem *lem)
@@ -194,3 +195,4 @@ int     ft_present_path(t_lem *lem)
     }
     return (0);
 }
+

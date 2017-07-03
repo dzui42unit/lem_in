@@ -111,7 +111,6 @@ void    ft_sort_path(t_path *head)
        current = min->next;
        while (current)
        {
-       		ft_printf("length min: %d, current length: %d\n", min->length, current->length);
            if (min->length > current->length)
            {
                min = current;
