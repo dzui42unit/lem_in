@@ -20,6 +20,7 @@ typedef struct      s_lem
     int             found;
     int             prev_i;
     int             prev_j;
+    int 			del;
 }                   t_lem;
 
 typedef struct      s_room
@@ -46,7 +47,6 @@ t_path          *ft_append_path(t_path *head, t_lem *lem);
 uintmax_t       ft_atoi_unsigned(char *str);
 void            ft_make_matrix(t_room *head, t_lem *lem);
 void            ft_print_adjecency_matrix(t_lem *lem);
-void			ft_destroy_links(t_lem *lem, int i);
 void            ft_sort_rooms(t_room *head);
 void            ft_set_start(t_room *head);
 void            ft_set_end(t_room *head);
@@ -67,5 +67,10 @@ int             ft_check_start_end(t_room *head);
 int             ft_string_compare(char *str_1, char *str_2);
 int             ft_present_path(t_lem *lem);
 int 			ft_check_connection(t_lem *lem, int i, int j);
+void			ft_erase_node(t_lem *lem, int i);
+int 			ft_check_prev(t_lem *lem, int i);
+int 			ft_check_next(t_lem *lem, int i);
+void			ft_cut_nodes(t_lem *lem);
+int 			ft_is_empty(t_lem *lem, int i);
 
 #endif

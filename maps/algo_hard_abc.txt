@@ -1,0 +1,20 @@
+30
+##end
+k 1 2
+e 1 1
+c 2 2
+##start
+a 2 0
+f 3 0
+b 6 1
+j 3 4
+d 4 5
+a-e
+e-d
+d-k
+e-f
+f-j
+j-k
+a-b
+b-c
+c-d
