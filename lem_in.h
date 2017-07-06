@@ -72,5 +72,11 @@ int 			ft_check_prev(t_lem *lem, int i);
 int 			ft_check_next(t_lem *lem, int i);
 void			ft_cut_nodes(t_lem *lem);
 int 			ft_is_empty(t_lem *lem, int i);
+void			ft_set_last_row(t_lem *lem);
+void			ft_count_path(t_lem *lem);
+void			ft_connection_numbers(t_lem *lem);
+int 			ft_assign_last(t_lem *lem, int i);
+void			ft_find_prev_node(t_lem *lem);
+int 			ft_check_dupliactes_path(t_lem *lem,  t_path *head);
 
 #endif
