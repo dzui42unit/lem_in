@@ -92,9 +92,7 @@ int     main(void)
     ft_sort_rooms(head_room);
     lem.size = ft_list_size(head_room);
     ft_make_matrix(head_room, &lem);
-    ft_print_adjecency_matrix(&lem);
     ft_connection_numbers(&lem);
-    ft_print_adjecency_matrix(&lem);
     int counter;
     counter = 0;
     int i = 0;
@@ -103,8 +101,6 @@ int     main(void)
     {
         lem.found = 0;
         ft_depth_first_search(&lem, 0, head_room);
-        ft_print_adjecency_matrix(&lem);
-       	ft_printf("\n|----------------------------------|\n\n");
        	if (head_path == NULL)
            head_path = ft_create_path(&lem);
        	else
@@ -117,7 +113,7 @@ int     main(void)
         ft_error();
    ft_printf("\n");
    ft_sort_path(head_path);
-   ft_print_list(head_path, &lem);
+   ft_print_path(&lem, head_room, head_path);
    return (0);
 }
 
@@ -332,6 +328,40 @@ void    ft_depth_first_search(t_lem *lem, int i, t_room *head_room)
         }
         j++;
     }
+}
+
+void	ft_print_path(t_lem *lem, t_room *head, t_path *head_path)
+{
+	int 	i;
+	int 	j;
+	int 	counter;
+	t_path 	*current;
+
+	counter = 0;
+	current = head_path;
+	while (current)
+	{
+		i = 0;
+		j = 0;
+		ft_printf("path #%d\n", counter + 1);
+		while (i < lem->size)
+		{
+			if (current->path[i] == 1)
+			{
+				ft_print_needed_node(lem, head, i);
+				if (j < current->length - 1)
+				{
+					ft_printf(" -> ");
+					j++;
+				}
+			}
+			i++;
+		}
+		counter++;
+		current = current->next;
+		ft_printf("\n");
+	}
+	ft_printf("\n");
 }
 
 int 	ft_check_connection(t_lem *lem, int i, int j)

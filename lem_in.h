@@ -78,5 +78,7 @@ void			ft_connection_numbers(t_lem *lem);
 int 			ft_assign_last(t_lem *lem, int i);
 void			ft_find_prev_node(t_lem *lem);
 int 			ft_check_dupliactes_path(t_lem *lem,  t_path *head);
+void			ft_print_path(t_lem *lem, t_room *head, t_path *head_path);
+
 
 #endif
