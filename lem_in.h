@@ -40,12 +40,12 @@ typedef struct      s_path
     int             length;
 }                   t_path;
 
-t_room          *ft_create_room(t_lem *lem);
-t_room          *ft_append_element(t_room *head, t_lem *lem);
+t_room          *ft_create_room(t_lem *lem, char *data);
+t_room          *ft_append_element(t_room *head, t_lem *lem, char *data);
 t_path          *ft_create_path(t_lem *lem);
 t_path          *ft_append_path(t_path *head, t_lem *lem);
 uintmax_t       ft_atoi_unsigned(char *str);
-void            ft_make_matrix(t_room *head, t_lem *lem);
+void            ft_make_matrix(t_room *head, t_lem *lem, char *buff);
 void            ft_print_adjecency_matrix(t_lem *lem);
 void            ft_sort_rooms(t_room *head);
 void            ft_set_start(t_room *head);

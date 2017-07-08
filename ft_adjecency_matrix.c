@@ -1,13 +1,15 @@
 #include "lem_in.h"
 
-void    ft_make_matrix(t_room *head, t_lem *lem)
+void    ft_make_matrix(t_room *head, t_lem *lem, char *buff)
 {
     char    **splitted;
     int     i;
     int     j;
 
-    if(ft_count_char(lem->input_data, '-') != 1)
+    if(ft_count_char(buff, '-') != 1)
+    {
         ft_error();
+    }
     lem->adj_matrix = (int **)malloc(sizeof(int *) * lem->size);
     i = 0;
     lem->visited = (int *)malloc(sizeof(int) * lem->size);
@@ -28,23 +30,31 @@ void    ft_make_matrix(t_room *head, t_lem *lem)
         }
         i++;
     }
-    splitted = ft_strsplit(lem->input_data, '-');
+    splitted = ft_strsplit(buff, '-');
     i = ft_find_list_element(head, splitted[0]);
     j = ft_find_list_element(head, splitted[1]);
     if (i == -1 || j == -1)
         ft_error();
     lem->adj_matrix[i][j] = 1;
     lem->adj_matrix[j][i] = 1;
-    while (get_next_line(0, &lem->input_data))
+    while (get_next_line(0, &buff))
     {
-        if(ft_count_char(lem->input_data, '-') != 1)
+        if (ft_strequ(buff, "##start") || ft_strequ(buff, "##end"))
             ft_error();
-        splitted = ft_strsplit(lem->input_data, '-');
+        if (buff[0] == '#')
+        {
+            ft_strclr(buff);
+            continue ;
+        }
+        if(ft_count_char(buff, '-') != 1)
+            ft_error();
+        splitted = ft_strsplit(buff, '-');
         i = ft_find_list_element(head, splitted[0]);
         j = ft_find_list_element(head, splitted[1]);
         if (i == -1 || j == -1)
             ft_error();
         lem->adj_matrix[i][j] = 1;
         lem->adj_matrix[j][i] = 1;
+        ft_strclr(buff);
     }
 }

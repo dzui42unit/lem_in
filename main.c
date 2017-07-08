@@ -5,83 +5,63 @@ int     main(void)
     t_lem   lem;
     t_room  *head_room;
     t_path  *head_path;
+    char 	*buff;
 
     head_room = NULL;
     head_path = NULL;
-    lem.input_data = ft_strnew(0);
+    buff = ft_strnew(0);
     lem.start = 0;
     lem.end = 0;
-    while (get_next_line(0, &lem.input_data)
-           && lem.input_data[0] == '#')
+    while (get_next_line(0, &buff) && buff[0] == '#')
     {
-        if (ft_strequ(lem.input_data, "##start")
-                || ft_strequ(lem.input_data, "##end"))
-            ft_error();
+    	if (ft_strequ(buff, "##start") || ft_strequ(buff, "##end"))
+    		ft_error();
+    	ft_strclr(buff);
     }
-    if (!ft_check_number(lem.input_data) || ft_strequ(lem.input_data, ""))
-        ft_error();
-    lem.ants = ft_atoi_unsigned(lem.input_data);
-    while (get_next_line(0, &lem.input_data))
+    if (!ft_check_number(buff) || ft_strequ(buff, ""))
+    	ft_error();
+    lem.ants = ft_atoi_unsigned(buff);
+    ft_strclr(buff);
+    int start = 0;
+    int end = 0;
+    while (get_next_line(0, &buff))
     {
-        if (lem.input_data == NULL)
-            ft_error();
-        if (ft_count_char(lem.input_data, '-') == 1 && !ft_count_char(lem.input_data, ' '))
-            break ;
-        if (ft_strequ(lem.input_data, ""))
-            ft_error();
-        if ((lem.input_data[0] == '#' && lem.input_data[1] && lem.input_data[1] != '#')
-            || ((lem.input_data[0] == '#' && lem.input_data[1] && lem.input_data[1] == '#')
-                && !ft_strequ(lem.input_data, "##start") && !ft_strequ(lem.input_data, "##end")))
-            continue ;
-        if (ft_strequ(lem.input_data, "##start") && lem.start)
-            ft_error();
-        if (ft_strequ(lem.input_data, "##start") && lem.start == 0)
-        {
-            ft_strclr(lem.input_data);
-            while (get_next_line(0, &lem.input_data))
-            {
-                if ((lem.input_data[0] == '#' && lem.input_data[1] && lem.input_data[1] != '#'))
-                    continue ;
-                else if (((lem.input_data[0] == '#' && lem.input_data[1] && lem.input_data[1] == '#')
-                          && !ft_strequ(lem.input_data, "##start") && !ft_strequ(lem.input_data, "##end")))
-                    continue ;
-                else if (((lem.input_data[0] == '#' && lem.input_data[1] && lem.input_data[1] == '#')
-                          && (ft_strequ(lem.input_data, "##start") || ft_strequ(lem.input_data, "##end"))))
-                    ft_error();
-                else if (ft_strequ(lem.input_data, ""))
-                    ft_error();
-                else
-                    break ;
-            }
-            lem.start = 1;
-        }
-        if (ft_strequ(lem.input_data, "##end") && lem.end)
-            ft_error();
-        if (ft_strequ(lem.input_data, "##end") && lem.end == 0)
-        {
-            ft_strclr(lem.input_data);
-            while (get_next_line(0, &lem.input_data))
-            {
-                if ((lem.input_data[0] == '#' && lem.input_data[1] && lem.input_data[1] != '#'))
-                    continue ;
-                else if (((lem.input_data[0] == '#' && lem.input_data[1] && lem.input_data[1] == '#')
-                          && !ft_strequ(lem.input_data, "##start") && !ft_strequ(lem.input_data, "##end")))
-                    continue ;
-                else if (((lem.input_data[0] == '#' && lem.input_data[1] && lem.input_data[1] == '#')
-                          && (ft_strequ(lem.input_data, "##start") || ft_strequ(lem.input_data, "##end"))))
-                    ft_error();
-                else if (ft_strequ(lem.input_data, ""))
-                    ft_error();
-                else
-                    break ;
-            }
-            lem.end = 1;
-        }
-        if (head_room == NULL)
-            head_room = ft_create_room(&lem);
+    	if (ft_count_char(buff, '-') == 1 && buff[0] != '-')
+    	{
+    		break ;
+    	}
+    	if (ft_count_char(buff, '-') > 1 || buff[0] == '-')
+    	{
+    		ft_error();
+    	}
+    	if (ft_strequ(buff, "") || start > 1 || end > 1)
+    	{
+    		ft_error();
+    	}
+    	if (buff[0] == '#' && ft_count_char(buff, '#') == 1)
+    	{
+    		ft_strclr(buff);
+    		continue ;
+    	}
+    	if (buff[0] == '#' && ft_strequ(buff, "##start"))
+    	{
+    		start++;
+    		lem.start = start;
+    		ft_strclr(buff);
+    		continue ;
+    	}
+    	if (buff[0] == '#' && ft_strequ(buff, "##end"))
+    	{
+    		end++;
+    		lem.end = end;
+    		ft_strclr(buff);
+    		continue ;
+    	}
+    	if (head_room == NULL)
+           	head_room = ft_create_room(&lem, buff);
         else
-            ft_append_element(head_room, &lem);
-        ft_strclr(lem.input_data);
+           	ft_append_element(head_room, &lem, buff);
+       	ft_strclr(buff);
     }
     if (!ft_check_dupliactes(head_room))
         ft_error();
@@ -91,7 +71,7 @@ int     main(void)
     ft_set_end(head_room);
     ft_sort_rooms(head_room);
     lem.size = ft_list_size(head_room);
-    ft_make_matrix(head_room, &lem);
+    ft_make_matrix(head_room, &lem, buff);
     ft_connection_numbers(&lem);
     int counter;
     counter = 0;
@@ -99,6 +79,8 @@ int     main(void)
     ft_cut_nodes(&lem);
     while (ft_present_path(&lem))
     {
+    	if (i >= 500)
+    		break ;
         lem.found = 0;
         ft_depth_first_search(&lem, 0, head_room);
        	if (head_path == NULL)

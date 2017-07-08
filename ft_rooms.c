@@ -1,6 +1,6 @@
 #include "lem_in.h"
 
-t_room    *ft_append_element(t_room *head, t_lem *lem)
+t_room    *ft_append_element(t_room *head, t_lem *lem, char *data)
 {
     t_room  *conductor;
     t_room  *new_node;
@@ -8,7 +8,7 @@ t_room    *ft_append_element(t_room *head, t_lem *lem)
     conductor = head;
     while (conductor->next)
         conductor = conductor->next;
-    new_node = ft_create_room(lem);
+    new_node = ft_create_room(lem, data);
     conductor->next = new_node;
     return (new_node);
 }
@@ -138,7 +138,7 @@ void    ft_swap_nodes_path(t_path *node_1, t_path *node_2)
    free(temp);
 }
 
-t_room    *ft_create_room(t_lem *lem)
+t_room    *ft_create_room(t_lem *lem, char *data)
 {
     t_room  *node;
     char    **splitted;
@@ -146,9 +146,9 @@ t_room    *ft_create_room(t_lem *lem)
     node = (t_room *)malloc(sizeof(t_room));
     if (node == NULL)
         ft_error();
-    if (ft_count_char(lem->input_data, ' ') != 2)
+    if (ft_count_char(data, ' ') != 2)
         ft_error();
-    splitted = ft_strsplit(lem->input_data, ' ');
+    splitted = ft_strsplit(data, ' ');
     if (splitted[0][0] && splitted[0][0] != 'L' && splitted[0][0] != '#')
         node->name = ft_strdup(splitted[0]);
     else
@@ -164,15 +164,15 @@ t_room    *ft_create_room(t_lem *lem)
     node->next = NULL;
     if (lem->start == 1)
     {
-        lem->start++;
         node->start = 1;
         node->end = 0;
+        lem->start = 0;
     }
     else if (lem->end == 1)
     {
-        lem->end++;
         node->start = 0;
         node->end = 1;
+        lem->end = 0;
     }
     else
     {
