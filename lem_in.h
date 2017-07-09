@@ -35,6 +35,7 @@ typedef struct      s_lem
     int             turn;
     int             start;
     int             **adj_matrix;
+    int 			**init;
     int             end;
     int             size;
     int             *visited;
@@ -99,5 +100,6 @@ int				my_key_func(int key_code, t_lem *lem);
 int 			ft_visual(t_lem *lem);
 int				ft_draw_graph(t_lem *lem);
 t_room			*ft_get_room(t_room *head, int pos);
+void    		ft_copy_matrix(t_lem *lem);
 
 #endif

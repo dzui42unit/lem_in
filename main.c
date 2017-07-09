@@ -72,13 +72,12 @@ int     main(void)
     ft_sort_rooms(head_room);
     lem.size = ft_list_size(head_room);
     ft_make_matrix(head_room, &lem, buff);
-    ft_connection_numbers(&lem);
     int counter;
     counter = 0;
     int i = 0;
    	lem.head = head_room;
-   	ft_draw_graph(&lem);
     ft_cut_nodes(&lem);
+    ft_connection_numbers(&lem);
     while (ft_present_path(&lem))
     {
     	if (i >= 500)
@@ -98,6 +97,7 @@ int     main(void)
    ft_printf("\n");
    ft_sort_path(head_path);
    ft_print_path(&lem, head_room, head_path);
+   // ft_draw_graph(&lem);
    return (0);
 }
 
@@ -126,7 +126,7 @@ int 	ft_visual(t_lem *lem)
 		j = 0;
 		while (j < lem->size)
 		{
-			if (lem->adj_matrix[i][j] == 1)
+			if (lem->init[i][j] == 1)
 			{
 				start = ft_get_room(lem->head, i);
 				end = ft_get_room(lem->head, j);

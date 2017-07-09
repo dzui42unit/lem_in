@@ -11,11 +11,13 @@ void    ft_make_matrix(t_room *head, t_lem *lem, char *buff)
         ft_error();
     }
     lem->adj_matrix = (int **)malloc(sizeof(int *) * lem->size);
+    lem->init = (int **)malloc(sizeof(int *) * lem->size);
     i = 0;
     lem->visited = (int *)malloc(sizeof(int) * lem->size);
     while (i < lem->size)
     {
         lem->adj_matrix[i] = (int *)malloc(sizeof(int) * lem->size);
+        lem->init[i] = (int *)malloc(sizeof(int) * lem->size);
         lem->visited[i] = 0;
         i++;
     }
@@ -56,5 +58,24 @@ void    ft_make_matrix(t_room *head, t_lem *lem, char *buff)
         lem->adj_matrix[i][j] = 1;
         lem->adj_matrix[j][i] = 1;
         ft_strclr(buff);
+    }
+    ft_copy_matrix(lem);
+}
+
+void    ft_copy_matrix(t_lem *lem)
+{
+    int i;
+    int j;
+
+    i = 0;
+    while (i < lem->size)
+    {
+        j = 0;
+        while (j < lem->size)
+        {
+            lem->init[i][j] = lem->adj_matrix[i][j];
+            j++;
+        }
+        i++;
     }
 }
