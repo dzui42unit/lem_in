@@ -32,8 +32,7 @@ void    ft_error()
     ft_printf("ERROR\n");
     exit(0);
 }
-
-void    ft_print_needed_node(t_lem *lem, t_room *head, int pos)
+void 	ft_print_needed_node(t_lem *lem, t_room *head, int pos)
 {
     int     i;
     t_room *start;
@@ -46,6 +45,21 @@ void    ft_print_needed_node(t_lem *lem, t_room *head, int pos)
         i++;
     }
     ft_printf("%s", start->name);
+}
+
+t_room	*ft_get_room(t_room *head, int pos)
+{
+	int     i;
+    t_room *start;
+
+    i = 0;
+    start = head;
+    while (i < pos && start->next)
+    {
+        start = start->next;
+        i++;
+    }
+    return (start);
 }
 
 void    ft_print_adjecency_matrix(t_lem *lem)

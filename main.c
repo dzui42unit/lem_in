@@ -76,6 +76,8 @@ int     main(void)
     int counter;
     counter = 0;
     int i = 0;
+   	lem.head = head_room;
+   	ft_draw_graph(&lem);
     ft_cut_nodes(&lem);
     while (ft_present_path(&lem))
     {
@@ -97,6 +99,51 @@ int     main(void)
    ft_sort_path(head_path);
    ft_print_path(&lem, head_room, head_path);
    return (0);
+}
+
+int 	ft_visual(t_lem *lem)
+{
+	t_room *start;
+	int 	x;
+	int 	y;
+
+	img_clear(lem);
+	start = lem->head;
+	while (start)
+	{
+		x = start->x;
+		y = start->y;
+		circleSimple(lem, x, y, 30, 0x00FFFFFF);
+		start = start->next;
+	}
+	int i;
+	int j;
+	t_room *end;
+
+	i = 0;
+	while (i < lem->size)
+	{
+		j = 0;
+		while (j < lem->size)
+		{
+			if (lem->adj_matrix[i][j] == 1)
+			{
+				start = ft_get_room(lem->head, i);
+				end = ft_get_room(lem->head, j);
+				draw_line(lem, start->x, start->y, end->x, end->y);
+			}
+			j++;
+		}
+		i++;
+	}
+	start = lem->head;
+	mlx_put_image_to_window(lem->mlx, lem->win, lem->image, 0, 0);
+	while (start)
+	{
+		mlx_string_put(lem->mlx, lem->win, start->x, start->y, 0x00FF00FF, start->name);
+		start = start->next;
+	}
+	return (0);
 }
 
 void	ft_connection_numbers(t_lem *lem)

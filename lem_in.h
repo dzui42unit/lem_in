@@ -6,22 +6,11 @@
 # include "./libft/libft.h"
 # include <limits.h>
 # include <unistd.h>
-
-typedef struct      s_lem
-{
-    uintmax_t       ants;
-    int             turn;
-    int             start;
-    int             **adj_matrix;
-    int             end;
-    int             size;
-    int             *visited;
-    char            *input_data;
-    int             found;
-    int             prev_i;
-    int             prev_j;
-    int 			del;
-}                   t_lem;
+# include "mlx.h"
+# include <stdlib.h>
+# include <math.h>
+# define WIDTH 900
+# define HEIGHT 500
 
 typedef struct      s_room
 {
@@ -39,6 +28,26 @@ typedef struct      s_path
     int             *path;
     int             length;
 }                   t_path;
+
+typedef struct      s_lem
+{
+    uintmax_t       ants;
+    int             turn;
+    int             start;
+    int             **adj_matrix;
+    int             end;
+    int             size;
+    int             *visited;
+    char            *input_data;
+    int             found;
+    int             prev_i;
+    int             prev_j;
+    int 			del;
+    void			*mlx;
+	void			*win;
+	void			*image;
+	t_room			*head;
+}                   t_lem;
 
 t_room          *ft_create_room(t_lem *lem, char *data);
 t_room          *ft_append_element(t_room *head, t_lem *lem, char *data);
@@ -79,6 +88,16 @@ int 			ft_assign_last(t_lem *lem, int i);
 void			ft_find_prev_node(t_lem *lem);
 int 			ft_check_dupliactes_path(t_lem *lem,  t_path *head);
 void			ft_print_path(t_lem *lem, t_room *head, t_path *head_path);
-
+void			put_pixel_img(t_lem *lem, int x, int y, int color);
+void			draw_line(t_lem *lem, int x1, int y1, int x2, int y2);
+void 			circleSimple(t_lem *lem, int xCenter, int yCenter, int radius, int color);
+void			img_clear(t_lem *lem);
+int				get_red(int color);
+int				get_green(int color);
+int				get_blue(int color);
+int				my_key_func(int key_code, t_lem *lem);
+int 			ft_visual(t_lem *lem);
+int				ft_draw_graph(t_lem *lem);
+t_room			*ft_get_room(t_room *head, int pos);
 
 #endif
