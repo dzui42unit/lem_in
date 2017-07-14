@@ -12,9 +12,10 @@ int     main(void)
     buff = ft_strnew(0);
     lem.start = 0;
     lem.end = 0;
+	lem.show_path = 0;
     while (get_next_line(0, &buff) && buff[0] == '#')
     {
-    	if (ft_strequ(buff, "##start") || ft_strequ(buff, "##end"))
+    	if (ft_strequ(buff, "##start") || ft_strequ(buff, "##end") || ft_strequ(buff, "##path"))
     		ft_error();
     	ft_strclr(buff);
     }
@@ -24,31 +25,37 @@ int     main(void)
     ft_strclr(buff);
     int start = 0;
     int end = 0;
-	while (get_next_line(0, &buff))
-	{
-		if (ft_count_char(buff, '-') == 1 && buff[0] != '-')
+    while (get_next_line(0, &buff))
+    {
+    	if (ft_count_char(buff, '-') == 1 && buff[0] != '-')
+    	{
+    		break ;
+    	}
+    	if (ft_count_char(buff, '-') > 1 || buff[0] == '-')
+    	{
+    		ft_error();
+    	}
+    	if (ft_strequ(buff, "") || start > 1 || end > 1)
+    	{
+    		ft_error();
+    	}
+    	if (ft_strequ(buff, "##start"))
+    	{
+    		start++;
+    		lem.start = start;
+    		ft_strclr(buff);
+    		continue ;
+    	}
+    	if (ft_strequ(buff, "##end"))
+    	{
+    		end++;
+    		lem.end = end;
+    		ft_strclr(buff);
+    		continue ;
+    	}
+		if (ft_strequ(buff, "##path"))
 		{
-			break ;
-		}
-		if (ft_count_char(buff, '-') > 1 || buff[0] == '-')
-		{
-			ft_error();
-		}
-		if (ft_strequ(buff, "") || start > 1 || end > 1)
-		{
-			ft_error();
-		}
-		if (ft_strequ(buff, "##start"))
-		{
-			start++;
-			lem.start = start;
-			ft_strclr(buff);
-			continue ;
-		}
-		if (ft_strequ(buff, "##end"))
-		{
-			end++;
-			lem.end = end;
+			lem.show_path = 1;
 			ft_strclr(buff);
 			continue ;
 		}
@@ -57,12 +64,12 @@ int     main(void)
 			ft_strclr(buff);
 			continue ;
 		}
-		if (head_room == NULL)
-			head_room = ft_create_room(&lem, buff);
-		else
-			ft_append_element(head_room, &lem, buff);
-		ft_strclr(buff);
-	}
+    	if (head_room == NULL)
+           	head_room = ft_create_room(&lem, buff);
+        else
+           	ft_append_element(head_room, &lem, buff);
+       	ft_strclr(buff);
+    }
     if (!ft_check_dupliactes(head_room))
         ft_error();
     if (!ft_check_start_end(head_room))
@@ -74,14 +81,11 @@ int     main(void)
     ft_make_matrix(head_room, &lem, buff);
     int counter;
     counter = 0;
-    int i = 0;
    	lem.head = head_room;
     ft_cut_nodes(&lem);
     ft_connection_numbers(&lem);
     while (ft_present_path(&lem))
     {
-    	if (i >= 500)
-    		break ;
         lem.found = 0;
         ft_depth_first_search(&lem, 0, head_room);
        	if (head_path == NULL)
@@ -90,15 +94,17 @@ int     main(void)
        		ft_append_path(head_path, &lem);
        	ft_clear_path(&lem);
        	counter++;
-       	i++;
     }
     if (counter == 0)
         ft_error();
-   ft_printf("\n");
    ft_sort_path(head_path);
-   ft_print_path(&lem, head_room, head_path);
-   // ft_draw_graph(&lem);
-   return (0);
+	if (lem.show_path)
+	{
+		ft_printf("\n");
+		ft_print_path(&lem, head_room, head_path);
+	}
+	/* ft_draw_graph(&lem); */
+	return (0);
 }
 
 int 	ft_visual(t_lem *lem)

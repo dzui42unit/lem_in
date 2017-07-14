@@ -78,7 +78,7 @@ int		get_blue(int color)
 
 int		my_key_func(int key_code, t_lem *lem)
 {
-	if (key_code == 65307)
+	if (key_code == 53)
 	{
 		exit(0);
 	}
@@ -88,7 +88,7 @@ int		my_key_func(int key_code, t_lem *lem)
 int		ft_draw_graph(t_lem *lem)
 {
 	lem->mlx = mlx_init();
-	lem->win = mlx_new_window(lem->mlx, WIDTH, HEIGHT, "circle");
+	lem->win = mlx_new_window(lem->mlx, WIDTH, HEIGHT, "lem_in");
 	lem->image = mlx_new_image(lem->mlx, WIDTH, HEIGHT);
 	mlx_hook(lem->win, 2, 3, my_key_func, lem);
 	mlx_loop_hook(lem->mlx, &ft_visual, lem);

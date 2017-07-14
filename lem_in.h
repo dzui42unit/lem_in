@@ -1,9 +1,9 @@
 #ifndef LEM_IN_LEM_IN_H
 #define LEM_IN_LEM_IN_H
 # include "get_next_line.h"
-# include "./ft_printf/ft_printf.h"
 # include <stdlib.h>
 # include "./libft/libft.h"
+# include "./libft/ft_printf.h"
 # include <limits.h>
 # include <unistd.h>
 # include "mlx.h"
@@ -48,6 +48,7 @@ typedef struct      s_lem
 	void			*win;
 	void			*image;
 	t_room			*head;
+	int				show_path;
 }                   t_lem;
 
 t_room          *ft_create_room(t_lem *lem, char *data);
