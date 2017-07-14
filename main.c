@@ -24,45 +24,45 @@ int     main(void)
     ft_strclr(buff);
     int start = 0;
     int end = 0;
-    while (get_next_line(0, &buff))
-    {
-    	if (ft_count_char(buff, '-') == 1 && buff[0] != '-')
-    	{
-    		break ;
-    	}
-    	if (ft_count_char(buff, '-') > 1 || buff[0] == '-')
-    	{
-    		ft_error();
-    	}
-    	if (ft_strequ(buff, "") || start > 1 || end > 1)
-    	{
-    		ft_error();
-    	}
-    	if (buff[0] == '#' && ft_count_char(buff, '#') == 1)
-    	{
-    		ft_strclr(buff);
-    		continue ;
-    	}
-    	if (buff[0] == '#' && ft_strequ(buff, "##start"))
-    	{
-    		start++;
-    		lem.start = start;
-    		ft_strclr(buff);
-    		continue ;
-    	}
-    	if (buff[0] == '#' && ft_strequ(buff, "##end"))
-    	{
-    		end++;
-    		lem.end = end;
-    		ft_strclr(buff);
-    		continue ;
-    	}
-    	if (head_room == NULL)
-           	head_room = ft_create_room(&lem, buff);
-        else
-           	ft_append_element(head_room, &lem, buff);
-       	ft_strclr(buff);
-    }
+	while (get_next_line(0, &buff))
+	{
+		if (ft_count_char(buff, '-') == 1 && buff[0] != '-')
+		{
+			break ;
+		}
+		if (ft_count_char(buff, '-') > 1 || buff[0] == '-')
+		{
+			ft_error();
+		}
+		if (ft_strequ(buff, "") || start > 1 || end > 1)
+		{
+			ft_error();
+		}
+		if (ft_strequ(buff, "##start"))
+		{
+			start++;
+			lem.start = start;
+			ft_strclr(buff);
+			continue ;
+		}
+		if (ft_strequ(buff, "##end"))
+		{
+			end++;
+			lem.end = end;
+			ft_strclr(buff);
+			continue ;
+		}
+		if (buff[0] == '#')
+		{
+			ft_strclr(buff);
+			continue ;
+		}
+		if (head_room == NULL)
+			head_room = ft_create_room(&lem, buff);
+		else
+			ft_append_element(head_room, &lem, buff);
+		ft_strclr(buff);
+	}
     if (!ft_check_dupliactes(head_room))
         ft_error();
     if (!ft_check_start_end(head_room))
