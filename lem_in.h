@@ -48,7 +48,9 @@ typedef struct      s_lem
 	void			*win;
 	void			*image;
 	t_room			*head;
+    int             **lems;
 	int				show_path;
+    int             active_lem;
 }                   t_lem;
 
 t_room          *ft_create_room(t_lem *lem, char *data);
@@ -102,5 +104,8 @@ int 			ft_visual(t_lem *lem);
 int				ft_draw_graph(t_lem *lem);
 t_room			*ft_get_room(t_room *head, int pos);
 void    		ft_copy_matrix(t_lem *lem);
-
+char            *ft_join(const char *str1, const char *str2);
+void            ft_move_lem(t_lem *lem, t_path *path, t_room *head_room);
+int             ft_find_room(t_lem *lem, t_path *way, int active_lem);
+int             ft_is_free_room(t_lem *lem, int nb_room);
 #endif

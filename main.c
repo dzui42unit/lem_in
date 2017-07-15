@@ -1,15 +1,28 @@
 #include "lem_in.h"
 
+char 	*ft_join(const char *str1, const char *str2)
+{
+	char *res;
+
+	res = (char *)malloc((2 + ft_strlen(str1) + ft_strlen(str2)) * sizeof(char));
+	ft_strcpy(res, str1);
+	ft_strcat(res, str2);
+	ft_strcat(res, "\n");
+	return (res);
+}
+
 int     main(void)
 {
     t_lem   lem;
     t_room  *head_room;
     t_path  *head_path;
     char 	*buff;
+    char 	*temp;
 
     head_room = NULL;
     head_path = NULL;
-    buff = ft_strnew(0);
+    buff = ft_strnew(1);
+    lem.input_data = ft_strnew(1);
     lem.start = 0;
     lem.end = 0;
 	lem.show_path = 0;
@@ -22,6 +35,7 @@ int     main(void)
     if (!ft_check_number(buff) || ft_strequ(buff, ""))
     	ft_error();
     lem.ants = ft_atoi_unsigned(buff);
+    lem.input_data = ft_join(lem.input_data, buff);
     ft_strclr(buff);
     int start = 0;
     int end = 0;
@@ -29,6 +43,7 @@ int     main(void)
     {
     	if (ft_count_char(buff, '-') == 1 && buff[0] != '-')
     	{
+    		lem.input_data = ft_join(lem.input_data, buff);
     		break ;
     	}
     	if (ft_count_char(buff, '-') > 1 || buff[0] == '-')
@@ -41,6 +56,7 @@ int     main(void)
     	}
     	if (ft_strequ(buff, "##start"))
     	{
+    		lem.input_data = ft_join(lem.input_data, buff);
     		start++;
     		lem.start = start;
     		ft_strclr(buff);
@@ -50,6 +66,7 @@ int     main(void)
     	{
     		end++;
     		lem.end = end;
+    		lem.input_data = ft_join(lem.input_data, buff);
     		ft_strclr(buff);
     		continue ;
     	}
@@ -64,6 +81,7 @@ int     main(void)
 			ft_strclr(buff);
 			continue ;
 		}
+		lem.input_data = ft_join(lem.input_data, buff);
     	if (head_room == NULL)
            	head_room = ft_create_room(&lem, buff);
         else
@@ -82,12 +100,21 @@ int     main(void)
     int counter;
     counter = 0;
    	lem.head = head_room;
+   	ft_print_adjecency_matrix(&lem);
     ft_cut_nodes(&lem);
     ft_connection_numbers(&lem);
+    ft_print_adjecency_matrix(&lem);
+    while (lem.head)
+    {
+    	ft_printf("%s\n", lem.head->name);
+    	lem.head = lem.head->next;
+    }
+    lem.head = head_room;
     while (ft_present_path(&lem))
     {
         lem.found = 0;
         ft_depth_first_search(&lem, 0, head_room);
+        ft_print_adjecency_matrix(&lem);
        	if (head_path == NULL)
            head_path = ft_create_path(&lem);
        	else
@@ -97,14 +124,93 @@ int     main(void)
     }
     if (counter == 0)
         ft_error();
-   ft_sort_path(head_path);
-	if (lem.show_path)
-	{
-		ft_printf("\n");
-		ft_print_path(&lem, head_room, head_path);
-	}
-	/* ft_draw_graph(&lem); */
+ //   	ft_sort_path(head_path);
+ //   	ft_printf("%s", lem.input_data);
+	// if (lem.show_path)
+	// {
+	// 	ft_printf("\n");
+	// 	ft_print_path(&lem, head_room, head_path);
+	// }
+	// ft_move_lem(&lem, head_path, head_room);
 	return (0);
+}
+
+void	ft_move_lem(t_lem *lem, t_path *path, t_room *head_room)
+{
+	int 	i;
+	int 	j;
+	int  	place;
+	t_path 	*start;
+
+	i = 0;
+	lem->lems = (int **)malloc(sizeof(int *) * lem->ants);
+	while (i < lem->ants)
+	{
+		lem->lems[i] = (int *)malloc(sizeof(int) * 2);
+		lem->lems[i][0] = 1;
+		lem->lems[i][1] = 0;
+		i++;
+	}
+	j = lem->ants;
+	while (lem->ants > 0)
+	{
+		i = 0;
+		while (i < j)
+		{
+			if (lem->lems[i][0] == 1)
+			{
+				start = path;
+				while (start)
+				{
+					place = ft_find_room(lem, start, i);
+					if (ft_is_free_room(lem, place))
+					{
+						lem->lems[i][1] = place;
+						if (place == lem->size - 1)
+						{
+							lem->lems[i][0] = 0;
+							lem->lems[i][0] = -1;
+							lem->ants--;
+						}
+						ft_printf("L%d-", i + 1);
+						ft_print_needed_node(lem,head_room, place);
+						break ;
+					}
+					start = start->next;
+				}
+			}
+			i++;
+		}
+		ft_printf("\n");
+	}
+}
+
+int 	ft_is_free_room(t_lem *lem, int nb_room)
+{
+	int i;
+
+	i = 0;
+	while (i < lem->ants)
+	{
+		if (lem->lems[i][1] == nb_room)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int 	ft_find_room(t_lem *lem, t_path *way, int active_lem)
+{
+	int i;
+
+	i = lem->lems[active_lem][1] + 1;
+	while (i < lem->size)
+	{
+		if (way->path[i] == 1)
+			return (i);
+		i++;
+	}
+	return (-1);
 }
 
 int 	ft_visual(t_lem *lem)
