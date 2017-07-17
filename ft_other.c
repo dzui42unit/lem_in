@@ -1,5 +1,11 @@
 #include "lem_in.h"
 
+void    ft_error()
+{
+    ft_printf("ERROR\n");
+    exit(0);
+}
+
 int     ft_count_char(char *str, char ch)
 {
     int i;
@@ -48,4 +54,15 @@ uintmax_t   ft_atoi_unsigned(char *str)
         i++;
     }
     return (number);
+}
+
+char    *ft_join(const char *str1, const char *str2)
+{
+    char *res;
+
+    res = (char *)malloc((2 + ft_strlen(str1) + ft_strlen(str2)) * sizeof(char));
+    ft_strcpy(res, str1);
+    ft_strcat(res, str2);
+    ft_strcat(res, "\n");
+    return (res);
 }

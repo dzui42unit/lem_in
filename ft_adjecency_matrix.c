@@ -7,9 +7,7 @@ void    ft_make_matrix(t_room *head, t_lem *lem, char *buff)
     int     j;
 
     if(ft_count_char(buff, '-') != 1)
-    {
         ft_error();
-    }
     lem->adj_matrix = (int **)malloc(sizeof(int *) * lem->size);
     lem->init = (int **)malloc(sizeof(int *) * lem->size);
     i = 0;
@@ -35,6 +33,8 @@ void    ft_make_matrix(t_room *head, t_lem *lem, char *buff)
     splitted = ft_strsplit(buff, '-');
     i = ft_find_list_element(head, splitted[0]);
     j = ft_find_list_element(head, splitted[1]);
+    ft_print_needed_node(lem, head, i);
+    ft_print_needed_node(lem, head, j);
     if (i == -1 || j == -1)
         ft_error();
     lem->adj_matrix[i][j] = 1;
@@ -61,8 +61,13 @@ void    ft_make_matrix(t_room *head, t_lem *lem, char *buff)
         j = ft_find_list_element(head, splitted[1]);
         if (i == -1 || j == -1)
             ft_error();
-        lem->adj_matrix[i][j] = 1;
-        lem->adj_matrix[j][i] = 1;
+        if (i == j)
+            lem->adj_matrix[i][j] = 0;
+        else
+        {
+            lem->adj_matrix[i][j] = 1;
+            lem->adj_matrix[j][i] = 1;
+        }
         lem->input_data = ft_join(lem->input_data, buff);
         ft_strclr(buff);
     }

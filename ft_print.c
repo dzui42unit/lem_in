@@ -1,5 +1,39 @@
 #include "lem_in.h"
 
+void    ft_print_path(t_lem *lem, t_room *head, t_path *head_path)
+{
+    int     i;
+    int     j;
+    int     counter;
+    t_path  *current;
+
+    counter = 0;
+    current = head_path;
+    while (current)
+    {
+        i = 0;
+        j = 0;
+        ft_printf("path #%d\n", counter + 1);
+        while (i < lem->size)
+        {
+            if (current->path[i] == 1)
+            {
+                ft_print_needed_node(lem, head, i);
+                if (j < current->length - 1)
+                {
+                    ft_printf(" -> ");
+                    j++;
+                }
+            }
+            i++;
+        }
+        counter++;
+        current = current->next;
+        ft_printf("\n");
+    }
+    ft_printf("\n");
+}
+
 void    ft_print_list(t_path *head, t_lem *lem)
 {
     t_path *current;
@@ -27,11 +61,6 @@ void    ft_print_list(t_path *head, t_lem *lem)
     }
 }
 
-void    ft_error()
-{
-    ft_printf("ERROR\n");
-    exit(0);
-}
 void 	ft_print_needed_node(t_lem *lem, t_room *head, int pos)
 {
     int     i;

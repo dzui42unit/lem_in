@@ -1,14 +1,15 @@
 #include "lem_in.h"
 
-char 	*ft_join(const char *str1, const char *str2)
+int     ft_comment(char *str)
 {
-	char *res;
+    int i;
 
-	res = (char *)malloc((2 + ft_strlen(str1) + ft_strlen(str2)) * sizeof(char));
-	ft_strcpy(res, str1);
-	ft_strcat(res, str2);
-	ft_strcat(res, "\n");
-	return (res);
+    i = 0;
+    while (str[i] == '#')
+        i++;
+    if (i == 2)
+        return (0);
+    return (1);
 }
 
 int     main(void)
@@ -28,7 +29,7 @@ int     main(void)
 	lem.show_path = 0;
     while (get_next_line(0, &buff) && buff[0] == '#')
     {
-    	if (ft_strequ(buff, "##start") || ft_strequ(buff, "##end") || ft_strequ(buff, "##path"))
+        if (!ft_comment(buff))
     		ft_error();
     	ft_strclr(buff);
     }
@@ -47,13 +48,9 @@ int     main(void)
     		break ;
     	}
     	if (ft_count_char(buff, '-') > 1 || buff[0] == '-')
-    	{
     		ft_error();
-    	}
     	if (ft_strequ(buff, "") || start > 1 || end > 1)
-    	{
     		ft_error();
-    	}
     	if (ft_strequ(buff, "##start"))
     	{
     		lem.input_data = ft_join(lem.input_data, buff);
@@ -94,441 +91,103 @@ int     main(void)
         ft_error();
     ft_set_start(head_room);
     ft_set_end(head_room);
-    ft_sort_rooms(head_room);
     lem.size = ft_list_size(head_room);
     ft_make_matrix(head_room, &lem, buff);
+    ft_cut_nodes(&lem);
     int counter;
     counter = 0;
    	lem.head = head_room;
-   	ft_print_adjecency_matrix(&lem);
-    ft_cut_nodes(&lem);
-    ft_connection_numbers(&lem);
-    ft_print_adjecency_matrix(&lem);
-    while (lem.head)
-    {
-    	ft_printf("%s\n", lem.head->name);
-    	lem.head = lem.head->next;
-    }
-    lem.head = head_room;
-    while (ft_present_path(&lem))
-    {
+   	while (ft_present_path(&lem))
+   	{
         lem.found = 0;
         ft_depth_first_search(&lem, 0, head_room);
-        ft_print_adjecency_matrix(&lem);
-       	if (head_path == NULL)
-           head_path = ft_create_path(&lem);
-       	else
-       		ft_append_path(head_path, &lem);
+      	if (head_path == NULL)
+          head_path = ft_create_path(&lem);
+      	else
+      		ft_append_path(head_path, &lem);
        	ft_clear_path(&lem);
-       	counter++;
-    }
-    if (counter == 0)
-        ft_error();
- //   	ft_sort_path(head_path);
- //   	ft_printf("%s", lem.input_data);
-	// if (lem.show_path)
-	// {
-	// 	ft_printf("\n");
-	// 	ft_print_path(&lem, head_room, head_path);
-	// }
-	// ft_move_lem(&lem, head_path, head_room);
+      	counter++;
+   	}
+   	if (counter == 0)
+       ft_error();
+	ft_sort_path(head_path);
+	ft_printf("\n%s", lem.input_data);
+	ft_printf("\n");
+	ft_print_path(&lem, head_room, head_path);
 	return (0);
 }
 
-void	ft_move_lem(t_lem *lem, t_path *path, t_room *head_room)
-{
-	int 	i;
-	int 	j;
-	int  	place;
-	t_path 	*start;
-
-	i = 0;
-	lem->lems = (int **)malloc(sizeof(int *) * lem->ants);
-	while (i < lem->ants)
-	{
-		lem->lems[i] = (int *)malloc(sizeof(int) * 2);
-		lem->lems[i][0] = 1;
-		lem->lems[i][1] = 0;
-		i++;
-	}
-	j = lem->ants;
-	while (lem->ants > 0)
-	{
-		i = 0;
-		while (i < j)
-		{
-			if (lem->lems[i][0] == 1)
-			{
-				start = path;
-				while (start)
-				{
-					place = ft_find_room(lem, start, i);
-					if (ft_is_free_room(lem, place))
-					{
-						lem->lems[i][1] = place;
-						if (place == lem->size - 1)
-						{
-							lem->lems[i][0] = 0;
-							lem->lems[i][0] = -1;
-							lem->ants--;
-						}
-						ft_printf("L%d-", i + 1);
-						ft_print_needed_node(lem,head_room, place);
-						break ;
-					}
-					start = start->next;
-				}
-			}
-			i++;
-		}
-		ft_printf("\n");
-	}
-}
-
-int 	ft_is_free_room(t_lem *lem, int nb_room)
-{
-	int i;
-
-	i = 0;
-	while (i < lem->ants)
-	{
-		if (lem->lems[i][1] == nb_room)
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-int 	ft_find_room(t_lem *lem, t_path *way, int active_lem)
-{
-	int i;
-
-	i = lem->lems[active_lem][1] + 1;
-	while (i < lem->size)
-	{
-		if (way->path[i] == 1)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-int 	ft_visual(t_lem *lem)
-{
-	t_room *start;
-	int 	x;
-	int 	y;
-
-	img_clear(lem);
-	start = lem->head;
-	while (start)
-	{
-		x = start->x;
-		y = start->y;
-		circleSimple(lem, x, y, 30, 0x00FFFFFF);
-		start = start->next;
-	}
-	int i;
-	int j;
-	t_room *end;
-
-	i = 0;
-	while (i < lem->size)
-	{
-		j = 0;
-		while (j < lem->size)
-		{
-			if (lem->init[i][j] == 1)
-			{
-				start = ft_get_room(lem->head, i);
-				end = ft_get_room(lem->head, j);
-				draw_line(lem, start->x, start->y, end->x, end->y);
-			}
-			j++;
-		}
-		i++;
-	}
-	start = lem->head;
-	mlx_put_image_to_window(lem->mlx, lem->win, lem->image, 0, 0);
-	while (start)
-	{
-		mlx_string_put(lem->mlx, lem->win, start->x, start->y, 0x00FF00FF, start->name);
-		start = start->next;
-	}
-	return (0);
-}
-
-void	ft_connection_numbers(t_lem *lem)
-{
-	int i;
-	int j;
-	int temp;
-
-	i = 1;
-	j = lem->size - 1;
-	while (i < lem->size)
-	{
-		if (lem->adj_matrix[i][j] == 1)
-		{
-			temp = ft_assign_last(lem, i);
-			lem ->adj_matrix[i][j] = temp;
-		}
-		i++;
-	}
-}
-
-int 	ft_assign_last(t_lem *lem, int i)
-{
-	int j;
-	int counter;
-
-	j = 0;
-	counter = 0;
-	while (j < i)
-	{
-		if (lem->adj_matrix[i][j] == 1)
-			counter++;
-		j++;
-	}
-	return (counter);
-}
-
-void 	ft_cut_nodes(t_lem *lem)
-{
-	int i;
-	int j;
-	int connect_1;
-	int connect_2;
-
-	i = 0;
-	connect_1 = 0;
-	connect_2 = 0;
-	while (i < lem->size)
-	{
-		connect_1 = ft_check_prev(lem, i);
-		connect_2 = ft_check_next(lem, i);
-		if ((connect_2 == 0 || connect_1 == 0) && !ft_is_empty(lem, i))
-		{
-			ft_erase_node(lem, i);
-			ft_cut_nodes(lem);
-		}
-		i++;
-	}
-}
-
-int 	ft_is_empty(t_lem *lem, int i)
-{
-	int j;
-
-	j = 0;
-	while (j < lem->size)
-	{
-		if (lem->adj_matrix[i][j] > 0)
-			return (0);
-		j++;
-	}
-	return (1);
-}
-
-void	ft_erase_node(t_lem *lem, int i)
-{
-	int j;
-
-	j = 0;
-	while (j < lem->size)
-	{
-		lem->adj_matrix[i][j] = 0;
-		j++;
-	}
-	j = i;
-	i = 0;
-	while (i < lem->size)
-	{
-		lem->adj_matrix[i][j] = 0;
-		i++;
-	}
-}
-
-int 	ft_check_prev(t_lem *lem, int i)
-{
-	int j;
-	int counter;
-
-	j = 0;
-	if (i == 0)
-		return (1);
-	counter = 0;
-	while (j < i)
-	{
-		if (lem->adj_matrix[i][j] > 0)
-			counter++;
-		j++;
-	}
-	return (counter);
-}
-
-int 	ft_check_next(t_lem *lem, int i)
-{
-	int j;
-	int counter;
-
-	j = i;
-	counter = 0;
-	if (j == lem->size - 1)
-		return (1);
-	while (j < lem->size)
-	{
-		if (lem->adj_matrix[i][j] > 0)
-			counter++;
-		j++;
-	}
-	return (counter);
-}
-
-void    ft_clear_path(t_lem *lem)
+void    ft_restore_connections(t_lem *lem)
 {
     int i;
-
-    i = 0;
-    while (i < lem->size)
-    {
-        lem->visited[i] = 0;
-        i++;
-    }
-}
-
-void	ft_find_prev_node(t_lem *lem)
-{
-	int i;
-	int j;
-
-	i = lem->size - 2;
-	while (i >= 0)
-	{
-		if (lem->visited[i] == 1)
-		{
-			break ;
-		}
-		i--;
-	}
-	j = lem->size - 2;
-	while (j >= 0)
-	{
-		if (lem->adj_matrix[i][j] == 1)
-		{
-			lem->adj_matrix[i][j] = -1;
-			lem->adj_matrix[j][i] = -1;
-			return ;
-		}
-		j--;
-	}
-}
-
-void    ft_depth_first_search(t_lem *lem, int i, t_room *head_room)
-{
     int j;
-    int temp;
+    int flag;
 
-    j = i;
-    lem->visited[j] = 1;
-    if (j == lem->size - 1 && lem->visited[j])
+    i = 1;
+    while (i < lem->size - 1)
     {
-        lem->adj_matrix[lem->prev_i][lem->prev_j]--;
-        lem->adj_matrix[lem->prev_j][lem->prev_i]--;
-        if (lem->adj_matrix[lem->prev_i][lem->prev_j] == 0)
+        flag = 0;
+        if (lem->visited[i] == 1)
         {
-			lem->adj_matrix[lem->prev_i][lem->prev_j] = -1;
-        	lem->adj_matrix[lem->prev_j][lem->prev_i] = -1;
+            j = i + 1;
+            while (j < lem->size - 1)
+            {
+                if (lem->visited[j] == 1)
+                {
+                    flag = 1;
+                    break ;
+                }
+                j++;
+            }
+        }
+        if (flag)
+        {
+            if (ft_check_connect(lem, i))
+            {
+                lem->adj_matrix[i][j] = 1;
+                lem->adj_matrix[j][i] = 1;
+            }
+            i = j;
         }
         else
-        {
-        	ft_find_prev_node(lem);
-        }
-        lem->found = 1;
-    }
-    while (j < lem->size && !lem->found)
-    {
-        if (lem->adj_matrix[i][j] == -1)
-        {
-        	temp = ft_check_connection(lem, i, j);
-        	if (temp != -1)
-        		j = temp;
-        	else
-        	{
-		        lem->adj_matrix[lem->prev_i][lem->prev_j] = -1;
-		        lem->adj_matrix[lem->prev_j][lem->prev_i] = -1;
-            	ft_clear_path(lem);
-            	ft_depth_first_search(lem, 0, head_room);
-        	}
-        }
-        if (!lem->visited[j] && lem->adj_matrix[i][j] > 0)
-        {
-            lem->prev_i = i;
-            lem->prev_j = j;
-            ft_depth_first_search(lem, j, head_room);
-        }
-        j++;
+            i++;
     }
 }
 
-void	ft_print_path(t_lem *lem, t_room *head, t_path *head_path)
-{
-	int 	i;
-	int 	j;
-	int 	counter;
-	t_path 	*current;
-
-	counter = 0;
-	current = head_path;
-	while (current)
-	{
-		i = 0;
-		j = 0;
-		ft_printf("path #%d\n", counter + 1);
-		while (i < lem->size)
-		{
-			if (current->path[i] == 1)
-			{
-				ft_print_needed_node(lem, head, i);
-				if (j < current->length - 1)
-				{
-					ft_printf(" -> ");
-					j++;
-				}
-			}
-			i++;
-		}
-		counter++;
-		current = current->next;
-		ft_printf("\n");
-	}
-	ft_printf("\n");
-}
-
-int 	ft_check_connection(t_lem *lem, int i, int j)
-{
-	while (j < lem->size)
-	{
-		if (lem->adj_matrix[i][j] > 0)
-			return (j);
-		j++;
-	}
-	return (-1);
-}
-
-int     ft_present_path(t_lem *lem)
+int     ft_check_path_presense(t_lem *lem)
 {
     int i;
     int j;
 
     i = 0;
-    j = lem->size - 1;
     while (i < lem->size)
     {
-        if (lem->adj_matrix[i][j] > 0)
-            return (1);
+        j = 0;
+        while (j < lem->size)
+        {
+            if (lem->adj_matrix[i][j] == 1)
+                return (1);
+            j++;
+        }
         i++;
     }
     return (0);
 }
 
+int     ft_check_connect(t_lem *lem, int i)
+{
+    int j;
+    int counter;
+
+    j = i + 1;
+    counter = 0;
+    while (i < lem->size)
+    {
+        if (lem->adj_matrix[i][j] > 0)
+            counter++;
+        i++;
+    }
+    if (counter == 0)
+        return (0);
+    return (1);
+}

@@ -1,5 +1,50 @@
 #include "lem_in.h"
 
+int 	ft_visual(t_lem *lem)
+{
+	t_room *start;
+	int 	x;
+	int 	y;
+
+	img_clear(lem);
+	start = lem->head;
+	while (start)
+	{
+		x = start->x;
+		y = start->y;
+		circleSimple(lem, x, y, 30, 0x00FFFFFF);
+		start = start->next;
+	}
+	int i;
+	int j;
+	t_room *end;
+
+	i = 0;
+	while (i < lem->size)
+	{
+		j = 0;
+		while (j < lem->size)
+		{
+			if (lem->init[i][j] == 1)
+			{
+				start = ft_get_room(lem->head, i);
+				end = ft_get_room(lem->head, j);
+				draw_line(lem, start->x, start->y, end->x, end->y);
+			}
+			j++;
+		}
+		i++;
+	}
+	start = lem->head;
+	mlx_put_image_to_window(lem->mlx, lem->win, lem->image, 0, 0);
+	while (start)
+	{
+		mlx_string_put(lem->mlx, lem->win, start->x, start->y, 0x00FF00FF, start->name);
+		start = start->next;
+	}
+	return (0);
+}
+
 void	put_pixel_img(t_lem *lem, int x, int y, int color)
 {
 	char	*px;
