@@ -33,8 +33,6 @@ void    ft_make_matrix(t_room *head, t_lem *lem, char *buff)
     splitted = ft_strsplit(buff, '-');
     i = ft_find_list_element(head, splitted[0]);
     j = ft_find_list_element(head, splitted[1]);
-    ft_print_needed_node(lem, head, i);
-    ft_print_needed_node(lem, head, j);
     if (i == -1 || j == -1)
         ft_error();
     lem->adj_matrix[i][j] = 1;
@@ -59,6 +57,8 @@ void    ft_make_matrix(t_room *head, t_lem *lem, char *buff)
         splitted = ft_strsplit(buff, '-');
         i = ft_find_list_element(head, splitted[0]);
         j = ft_find_list_element(head, splitted[1]);
+        ft_printf("Room 1: %s, index = %d\n", splitted[0], i);
+        ft_printf("Room 2: %s, index = %d\n", splitted[1], j);
         if (i == -1 || j == -1)
             ft_error();
         if (i == j)

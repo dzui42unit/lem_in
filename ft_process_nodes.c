@@ -1,32 +1,5 @@
 #include "lem_in.h"
 
-void	ft_find_prev_node(t_lem *lem)
-{
-	int i;
-	int j;
-	
-	i = lem->size - 2;
-	while (i >= 0)
-	{
-		if (lem->visited[i] == 1)
-		{
-			break ;
-		}
-		i--;
-	}
-	j = lem->size - 2;
-	while (j >= 0)
-	{
-		if (lem->adj_matrix[i][j] == 1)
-		{
-			lem->adj_matrix[i][j] = -1;
-			lem->adj_matrix[j][i] = -1;
-			return ;
-		}
-		j--;
-	}
-}
-
 void	ft_erase_node(t_lem *lem, int i)
 {
 	int j;
@@ -58,40 +31,6 @@ int 	ft_check_prev(t_lem *lem, int i)
 	while (j < i)
 	{
 		if (lem->adj_matrix[i][j] > 0)
-			counter++;
-		j++;
-	}
-	return (counter);
-}
-
-int 	ft_check_next(t_lem *lem, int i)
-{
-	int j;
-	int counter;
-
-	j = i;
-	counter = 0;
-	if (j == lem->size - 1)
-		return (1);
-	while (j < lem->size)
-	{
-		if (lem->adj_matrix[i][j] > 0)
-			counter++;
-		j++;
-	}
-	return (counter);
-}
-
-int 	ft_assign_last(t_lem *lem, int i)
-{
-	int j;
-	int counter;
-
-	j = 0;
-	counter = 0;
-	while (j < i)
-	{
-		if (lem->adj_matrix[i][j] == 1)
 			counter++;
 		j++;
 	}

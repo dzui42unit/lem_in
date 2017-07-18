@@ -28,17 +28,18 @@ void	ft_move_lem(t_lem *lem, t_path *path, t_room *head_room)
 				while (start)
 				{
 					place = ft_find_room(lem, start, i);
-					if (ft_is_free_room(lem, place))
+					if (ft_is_free_room(lem, place, j))
 					{
 						lem->lems[i][1] = place;
 						if (place == lem->size - 1)
 						{
 							lem->lems[i][0] = 0;
-							lem->lems[i][0] = -1;
+							lem->lems[i][1] = -1;
 							lem->ants--;
 						}
 						ft_printf("L%d-", i + 1);
 						ft_print_needed_node(lem,head_room, place);
+						ft_printf(" ");
 						break ;
 					}
 					start = start->next;
@@ -50,12 +51,12 @@ void	ft_move_lem(t_lem *lem, t_path *path, t_room *head_room)
 	}
 }
 
-int 	ft_is_free_room(t_lem *lem, int nb_room)
+int 	ft_is_free_room(t_lem *lem, int nb_room, int lems)
 {
 	int i;
 
 	i = 0;
-	while (i < lem->ants)
+	while (i < lems)
 	{
 		if (lem->lems[i][1] == nb_room)
 			return (0);

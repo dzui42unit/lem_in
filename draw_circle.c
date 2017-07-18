@@ -12,7 +12,7 @@ int 	ft_visual(t_lem *lem)
 	{
 		x = start->x;
 		y = start->y;
-		circleSimple(lem, x, y, 30, 0x00FFFFFF);
+		circleSimple(lem, x, y, 0x00FFFFFF);
 		start = start->next;
 	}
 	int i;
@@ -39,7 +39,7 @@ int 	ft_visual(t_lem *lem)
 	mlx_put_image_to_window(lem->mlx, lem->win, lem->image, 0, 0);
 	while (start)
 	{
-		mlx_string_put(lem->mlx, lem->win, start->x, start->y, 0x00FF00FF, start->name);
+		mlx_string_put(lem->mlx, lem->win, start->x, start->y + lem->radius + 5, 0x0099ddff, start->name);
 		start = start->next;
 	}
 	return (0);
@@ -62,14 +62,14 @@ void	put_pixel_img(t_lem *lem, int x, int y, int color)
 
 void	draw_line(t_lem *lem, int x1, int y1, int x2, int y2)
 {
-	float dx = fabs(x2 - x1);
-	float dy = fabs(y2 - y1);
+	float dx = abs(x2 - x1);
+	float dy = abs(y2 - y1);
 	int sign_x = x1 < x2 ? 1 : -1;
 	int sign_y = y1 < y2 ? 1 : -1;
 	float error1 = dx - dy;
 	while (x1 != x2 || y1 != y2)
 	{
-		put_pixel_img(lem, x1, y1, 0x00FFFFFF);
+		put_pixel_img(lem, x1, y1, 0x00CCCCCC);
 		float error2 = error1 * 2;
 		if (error2 > -(dy))
 		{
@@ -85,15 +85,19 @@ void	draw_line(t_lem *lem, int x1, int y1, int x2, int y2)
 }
 
 
-void 	circleSimple(t_lem *lem, int xCenter, int yCenter, int radius, int color)
+void 	circleSimple(t_lem *lem, int xCenter, int yCenter, int color)
 {
-	int x, y, r2;    
+	int x;
+	int y;
+	int r2;    
 
-	r2 = radius * radius;
-	for (x = -radius; x <= radius; x++)
+	r2 = lem->radius * lem->radius;
+	x = -(lem->radius);
+	while (x <= lem->radius)
 	{
-		y = (int) (sqrt(r2 - x*x) + 0.5);
+		y = (int) (sqrt(r2 - x * x) + 0.5);
 		draw_line(lem, xCenter + x, yCenter + y, xCenter + x, yCenter - y);
+		x++;
 	}
 }
 

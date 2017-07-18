@@ -9,8 +9,8 @@
 # include "mlx.h"
 # include <stdlib.h>
 # include <math.h>
-# define WIDTH 900
-# define HEIGHT 500
+# define WIDTH 1920
+# define HEIGHT 1080
 
 typedef struct      s_room
 {
@@ -38,7 +38,6 @@ typedef struct      s_lem
     void            *image;
     char            *input_data;
     int             **lems;
-    int             turn;
     int             start;
     int             **adj_matrix;
     int 			**init;
@@ -46,11 +45,13 @@ typedef struct      s_lem
     int             size;
     int             *visited;
     int             found;
+    int             radius;
     int             prev_i;
     int             prev_j;
     int 			del;
 	int				show_path;
     int             active_lem;
+    int             turn;
 }                   t_lem;
 
 int             ft_check_path_presense(t_lem *lem);
@@ -81,7 +82,7 @@ void            ft_find_prev_node(t_lem *lem);
 void            ft_print_path(t_lem *lem, t_room *head, t_path *head_path);
 void            put_pixel_img(t_lem *lem, int x, int y, int color);
 void            draw_line(t_lem *lem, int x1, int y1, int x2, int y2);
-void            circleSimple(t_lem *lem, int xCenter, int yCenter, int radius, int color);
+void            circleSimple(t_lem *lem, int xCenter, int yCenter, int color);
 void            ft_move_lem(t_lem *lem, t_path *path, t_room *head_room);
 void            img_clear(t_lem *lem);
 void            ft_copy_matrix(t_lem *lem);
@@ -111,7 +112,7 @@ int				my_key_func(int key_code, t_lem *lem);
 int 			ft_visual(t_lem *lem);
 int				ft_draw_graph(t_lem *lem);
 int             ft_find_room(t_lem *lem, t_path *way, int active_lem);
-int             ft_is_free_room(t_lem *lem, int nb_room);
+int             ft_is_free_room(t_lem *lem, int nb_room, int lems);
 int				ft_has_connected_node(t_lem *lem, int i);
 
 #endif

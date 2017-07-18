@@ -18,23 +18,27 @@ int     main(void)
     t_room  *head_room;
     t_path  *head_path;
     char 	*buff;
-    char 	*temp;
 
     head_room = NULL;
     head_path = NULL;
-    buff = ft_strnew(1);
-    lem.input_data = ft_strnew(1);
+    buff = ft_strnew(0);
+    lem.input_data = ft_strnew(0);
     lem.start = 0;
     lem.end = 0;
 	lem.show_path = 0;
+    lem.radius = 40;
     while (get_next_line(0, &buff) && buff[0] == '#')
     {
         if (!ft_comment(buff))
+        {
     		ft_error();
+        }
     	ft_strclr(buff);
     }
     if (!ft_check_number(buff) || ft_strequ(buff, ""))
+    {
     	ft_error();
+    }
     lem.ants = ft_atoi_unsigned(buff);
     lem.input_data = ft_join(lem.input_data, buff);
     ft_strclr(buff);
@@ -91,12 +95,21 @@ int     main(void)
         ft_error();
     ft_set_start(head_room);
     ft_set_end(head_room);
+    ft_sort_rooms(head_room);
+    t_room *kek = head_room;
+    while (kek)
+    {
+        ft_printf("Name: %s\n", kek->name);
+        kek = kek->next;
+    }
     lem.size = ft_list_size(head_room);
     ft_make_matrix(head_room, &lem, buff);
     ft_cut_nodes(&lem);
     int counter;
     counter = 0;
    	lem.head = head_room;
+    lem.turn = 0;
+    ft_print_adjecency_matrix(&lem);
    	while (ft_present_path(&lem))
    	{
         lem.found = 0;
@@ -106,88 +119,19 @@ int     main(void)
       	else
       		ft_append_path(head_path, &lem);
        	ft_clear_path(&lem);
+        lem.turn = !lem.turn;
       	counter++;
    	}
    	if (counter == 0)
+    {
+        ft_printf("counter = %d\n", counter);
        ft_error();
+    }
 	ft_sort_path(head_path);
-	ft_printf("\n%s", lem.input_data);
+	ft_printf("%s", lem.input_data);
 	ft_printf("\n");
 	ft_print_path(&lem, head_room, head_path);
+    ft_move_lem(&lem, head_path, head_room);
+    // ft_draw_graph(&lem);
 	return (0);
-}
-
-void    ft_restore_connections(t_lem *lem)
-{
-    int i;
-    int j;
-    int flag;
-
-    i = 1;
-    while (i < lem->size - 1)
-    {
-        flag = 0;
-        if (lem->visited[i] == 1)
-        {
-            j = i + 1;
-            while (j < lem->size - 1)
-            {
-                if (lem->visited[j] == 1)
-                {
-                    flag = 1;
-                    break ;
-                }
-                j++;
-            }
-        }
-        if (flag)
-        {
-            if (ft_check_connect(lem, i))
-            {
-                lem->adj_matrix[i][j] = 1;
-                lem->adj_matrix[j][i] = 1;
-            }
-            i = j;
-        }
-        else
-            i++;
-    }
-}
-
-int     ft_check_path_presense(t_lem *lem)
-{
-    int i;
-    int j;
-
-    i = 0;
-    while (i < lem->size)
-    {
-        j = 0;
-        while (j < lem->size)
-        {
-            if (lem->adj_matrix[i][j] == 1)
-                return (1);
-            j++;
-        }
-        i++;
-    }
-    return (0);
-}
-
-int     ft_check_connect(t_lem *lem, int i)
-{
-    int j;
-    int counter;
-
-    j = i + 1;
-    counter = 0;
-    while (i < lem->size)
-    {
-        if (lem->adj_matrix[i][j] > 0)
-            counter++;
-        i++;
-    }
-    if (counter == 0)
-        return (0);
-    return (1);
 }

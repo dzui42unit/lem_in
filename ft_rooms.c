@@ -45,6 +45,31 @@ int     ft_find_list_element(t_room *head, char *key)
     return (-1);
 }
 
+void    ft_sort_rooms(t_room *head)
+{
+    t_room *current;
+    t_room *start;
+    t_room *min;
+
+    if (head->next)
+        start= head->next;
+    else
+        return ;
+    while (start)
+    {
+        min = start;
+        current = min;
+        while (current->next)
+        {
+            if (ft_string_compare(min->name, current->name) == 1)
+                min = current;
+            current = current->next;
+        }
+        if (min != start)
+            ft_swap_nodes_rooms(start, min);
+        start = start->next;
+    }
+}
 
 void    ft_swap_nodes_rooms(t_room *node_1, t_room *node_2)
 {
@@ -67,32 +92,6 @@ void    ft_swap_nodes_rooms(t_room *node_1, t_room *node_2)
     node_2->start = temp->start;
     node_2->end = temp->end;
     free(temp);
-}
-
-void    ft_sort_rooms(t_room *head)
-{
-    t_room *current;
-    t_room *start;
-    t_room *min;
-
-    if (head->next)
-        start= head->next;
-    else
-        return ;
-    while (start)
-    {
-        min = start;
-        current = min;
-        while (current->next)
-        {
-            if (ft_string_compare(min->name, current->name))
-                min = current;
-            current = current->next;
-        }
-        if (min != start)
-            ft_swap_nodes_rooms(start, min);
-        start = start->next;
-    }
 }
 
 void    ft_sort_path(t_path *head)

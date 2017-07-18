@@ -9,8 +9,8 @@ void    ft_depth_first_search(t_lem *lem, int i, t_room *head_room)
 	lem->visited[j] = 1;
 	if (j == lem->size - 1)
 	{
-		lem->adj_matrix[lem->prev_i][lem->prev_j]--;
-		lem->adj_matrix[lem->prev_j][lem->prev_i]--;
+		lem->adj_matrix[lem->prev_i][lem->prev_j] = -1;
+		lem->adj_matrix[lem->prev_j][lem->prev_i] = -1;
 		lem->found = 1;
 	}
 	while (j < lem->size && !lem->found)
@@ -63,46 +63,23 @@ int     ft_present_path(t_lem *lem)
     return (0);
 }
 
-void	ft_connection_numbers(t_lem *lem)
-{
-	int i;
-	int j;
-	int temp;
-
-	i = 1;
-	j = lem->size - 1;
-	while (i < lem->size)
-	{
-		if (lem->adj_matrix[i][j] == 1)
-		{
-			temp = ft_assign_last(lem, i);
-			lem ->adj_matrix[i][j] = temp;
-		}
-		i++;
-	}
-}
-
-int		ft_has_connected_node(t_lem *lem, int i)
-{
-	int j;
-	
-	j = 0;
-	while (j < i)
-	{
-		if (lem->adj_matrix[i][j] == 1)
-			return (1);
-		j++;
-	}
-	return (0);
-}
-
 int 	ft_check_connection(t_lem *lem, int i, int j)
 {
+	int position;
+
+	position = -1;
 	while (j < lem->size)
 	{
 		if (lem->adj_matrix[i][j] > 0)
-			return (j);
+		{
+			if (lem->turn)
+				position = j;
+			else
+				return (j);
+		}
 		j++;
 	}
+	if (lem->turn)
+		return (position);
 	return (-1);
 }

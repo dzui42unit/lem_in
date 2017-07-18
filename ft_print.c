@@ -64,7 +64,7 @@ void    ft_print_list(t_path *head, t_lem *lem)
 void 	ft_print_needed_node(t_lem *lem, t_room *head, int pos)
 {
     int     i;
-    t_room *start;
+    t_room  *start;
 
     i = 0;
     start = head;
@@ -96,7 +96,7 @@ void    ft_print_adjecency_matrix(t_lem *lem)
     int i;
     int j;
 
-    ft_printf("  Adjecency Matrix\n\n");
+    ft_printf("\tAdjecency Matrix\n\n");
     i = 0;
     while (i < lem->size)
     {
@@ -107,13 +107,6 @@ void    ft_print_adjecency_matrix(t_lem *lem)
             j++;
         }
         ft_printf("\n");
-        i++;
-    }
-    i = 0;
-    ft_printf("\n   Visited:\n\n");
-    while (i < lem->size)
-    {
-        ft_printf("%3d\n", lem->visited[i]);
         i++;
     }
 }
