@@ -54,6 +54,8 @@ typedef struct      s_lem
     int             turn;
 }                   t_lem;
 
+void            ft_find_prev_list_node(t_room **head, t_room **node, t_room **assign);
+void            ft_swap_nodes_rooms(t_room **head, t_room **first, t_room **second);
 int             ft_check_path_presense(t_lem *lem);
 t_room          *ft_create_room(t_lem *lem, char *data);
 t_room          *ft_append_element(t_room *head, t_lem *lem, char *data);
@@ -67,7 +69,6 @@ void            ft_sort_rooms(t_room *head);
 void            ft_restore_connections(t_lem *lem);
 void            ft_set_start(t_room *head);
 void            ft_set_end(t_room *head);
-void            ft_swap_nodes_rooms(t_room *node_1, t_room *node_2);
 void            ft_depth_first_search(t_lem *lem, int i, t_room *head);
 void            ft_print_list(t_path *head, t_lem *lem);
 void            ft_swap_nodes_path(t_path *node_1, t_path *node_2);
@@ -114,5 +115,6 @@ int				ft_draw_graph(t_lem *lem);
 int             ft_find_room(t_lem *lem, t_path *way, int active_lem);
 int             ft_is_free_room(t_lem *lem, int nb_room, int lems);
 int				ft_has_connected_node(t_lem *lem, int i);
+void            ft_set_start_end(t_room **head);
 
 #endif

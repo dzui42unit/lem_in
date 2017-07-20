@@ -45,55 +45,6 @@ int     ft_find_list_element(t_room *head, char *key)
     return (-1);
 }
 
-void    ft_sort_rooms(t_room *head)
-{
-    t_room *current;
-    t_room *start;
-    t_room *min;
-
-    if (head->next)
-        start= head->next;
-    else
-        return ;
-    while (start)
-    {
-        min = start;
-        current = min;
-        while (current->next)
-        {
-            if (ft_string_compare(min->name, current->name) == 1)
-                min = current;
-            current = current->next;
-        }
-        if (min != start)
-            ft_swap_nodes_rooms(start, min);
-        start = start->next;
-    }
-}
-
-void    ft_swap_nodes_rooms(t_room *node_1, t_room *node_2)
-{
-    t_room  *temp;
-
-    temp = (t_room *)malloc(sizeof(t_room));
-    temp->x = node_1->x;
-    temp->y = node_1->y;
-    temp->start = node_1->start;
-    temp->end = node_1->end;
-    temp->name = node_1->name;
-    node_1->name = node_2->name;
-    node_1->x = node_2->x;
-    node_1->y = node_2->y;
-    node_1->start = node_2->start;
-    node_1->end = node_2->end;
-    node_2->name = temp->name;
-    node_2->x = temp->x;
-    node_2->y = temp->y;
-    node_2->start = temp->start;
-    node_2->end = temp->end;
-    free(temp);
-}
-
 void    ft_sort_path(t_path *head)
 {
    t_path *current;

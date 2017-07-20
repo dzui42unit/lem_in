@@ -93,17 +93,10 @@ int     main(void)
         ft_error();
     if (!ft_check_start_end(head_room))
         ft_error();
-    ft_set_start(head_room);
-    ft_set_end(head_room);
-    ft_sort_rooms(head_room);
-    t_room *kek = head_room;
-    while (kek)
-    {
-        ft_printf("Name: %s\n", kek->name);
-        kek = kek->next;
-    }
+    ft_set_start_end(&head_room);
     lem.size = ft_list_size(head_room);
     ft_make_matrix(head_room, &lem, buff);
+    ft_print_adjecency_matrix(&lem);
     ft_cut_nodes(&lem);
     int counter;
     counter = 0;
