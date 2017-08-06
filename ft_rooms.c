@@ -182,38 +182,41 @@ t_room    *ft_create_room(t_lem *lem, char *data)
     return (node);
 }
 
-//t_path  *ft_create_path(t_lem *lem)
-//{
-//    t_path  *node;
-//    int     i;
-//    int     len;
-//
-//    node = (t_path *)malloc(sizeof(t_path));
-//    if (node == NULL)
-//        ft_error();
-//    node->path = (int *)malloc(sizeof(int) * lem->size);
-//    i = 0;
-//    len = 0;
-//    while (i < lem->size)
-//    {
-//        if (lem->temp_path[i] != -1)
-//            len++;
-//        node->path[i] = lem->temp_path[i];
-//        i++;
-//    }
-//    node->length = len;
-//    node->next = NULL;
-//    return (node);
-//}
+t_path  *ft_create_path(t_lem *lem, int *visited)
+{
+    t_path  *node;
+    int     i;
+    int     len;
 
-//void    ft_append_path(t_path **head, t_lem *lem)
-//{
-//    t_path  *conductor;
-//    t_path  *new_node;
-//
-//    conductor = *head;
-//    while (conductor->next)
-//        conductor = conductor->next;
-//    new_node = ft_create_path(lem);
-//    conductor->next = new_node;
-//}
+    node = (t_path *)malloc(sizeof(t_path));
+    if (node == NULL)
+    {
+        ft_printf("ERROR!\n");
+        exit(0);
+    }
+    node->path = (int *)malloc(sizeof(int) * lem->size);
+    i = 0;
+    len = 0;
+    while (i < lem->size)
+    {
+        node->path[i] = visited[i];
+        if (visited[i] != -1)
+            len++;
+        i++;
+    }
+    node->length = len;
+    node->next = NULL;
+    return (node);
+}
+
+void    ft_append_path(t_path **head, t_lem *lem, int *visited)
+{
+    t_path  *conductor;
+    t_path  *new_node;
+
+    conductor = *head;
+    while (conductor->next)
+        conductor = conductor->next;
+    new_node = ft_create_path(lem, visited);
+    conductor->next = new_node;
+}

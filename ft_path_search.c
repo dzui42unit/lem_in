@@ -1,6 +1,6 @@
 #include "lem_in.h"
 
-void    ft_depth_first_search(t_lem *lem, t_room *head_room, int *visited)
+void    ft_depth_first_search(t_lem *lem, t_room *head_room, int *visited, t_path **head_path)
 {
     int i;
     int current;
@@ -8,9 +8,10 @@ void    ft_depth_first_search(t_lem *lem, t_room *head_room, int *visited)
 
     if (ft_path_finished(lem, head_room, visited))
     {
-        ft_printf("\nFINISHED\n");
-        ft_print_visited(lem, visited);
-        ft_printf("\n");
+        if (*(head_path) == NULL)
+            *(head_path) = ft_create_path(lem, visited);
+        else
+            ft_append_path(head_path, lem, visited);
         ft_remove_last_visited(lem, visited);
         lem->index -= 1;
         return ;
@@ -27,7 +28,7 @@ void    ft_depth_first_search(t_lem *lem, t_room *head_room, int *visited)
                 visited[lem->index] = queue[i];
                 lem->index++;
                 ft_remove_queue_elem(lem, queue, lem->size, queue[i]);
-                ft_depth_first_search(lem, head_room, visited);
+                ft_depth_first_search(lem, head_room, visited, head_path);
             }
             i++;
         }

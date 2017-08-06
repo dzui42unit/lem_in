@@ -103,6 +103,8 @@ int     main(void)
     ft_print_rooms(head_room);
     lem.visited[0] = (ft_get_room(head_room, 0))->id;
     lem.index = 1;
-    ft_depth_first_search(&lem, head_room, lem.visited);
+    ft_depth_first_search(&lem, head_room, lem.visited, &head_path);
+    ft_sort_path(head_path);
+    ft_print_path(&lem, head_room, head_path);
 	return (0);
 }
