@@ -1,5 +1,6 @@
 20
 ##start
+##path
 start 0 1
 ##end
 end 100 100

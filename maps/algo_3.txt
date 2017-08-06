@@ -1,5 +1,6 @@
 15
 ##start
+##path
 1 23 3
 2 16 7
 #comment
