@@ -1,80 +1,75 @@
 #include "lem_in.h"
 
-void	ft_move_lem(t_lem *lem, t_path *path, t_room *head_room)
+t_room   *ft_where_the_ant_is(t_room *head, uintmax_t active_lem)
 {
-	int 	i;
-	int 	j;
-	int  	place;
-	t_path 	*start;
+    t_room  *start;
 
-	i = 0;
-	lem->lems = (int **)malloc(sizeof(int *) * lem->ants);
-	while (i < lem->ants)
-	{
-		lem->lems[i] = (int *)malloc(sizeof(int) * 2);
-		lem->lems[i][0] = 1;
-		lem->lems[i][1] = 0;
-		i++;
-	}
-	j = lem->ants;
-	while (lem->ants > 0)
-	{
-		i = 0;
-		while (i < j)
-		{
-			if (lem->lems[i][0] == 1)
-			{
-				start = path;
-				while (start)
-				{
-					place = ft_find_room(lem, start, i);
-					if (ft_is_free_room(lem, place, j))
-					{
-						lem->lems[i][1] = place;
-						if (place == lem->size - 1)
-						{
-							lem->lems[i][0] = 0;
-							lem->lems[i][1] = -1;
-							lem->ants--;
-						}
-						ft_printf("L%d-", i + 1);
-						ft_print_needed_node(lem,head_room, place);
-						ft_printf(" ");
-						break ;
-					}
-					start = start->next;
-				}
-			}
-			i++;
-		}
-		ft_printf("\n");
-	}
+    start = head;
+    while (start)
+    {
+        if (active_lem == start->active_lem)
+            return (start);
+        start = start->next;
+    }
+    return (head);
 }
 
-int 	ft_is_free_room(t_lem *lem, int nb_room, int lems)
+int     ft_position_in_path(t_lem *lem, t_path *path, int room)
 {
-	int i;
+    int     i;
 
-	i = 0;
-	while (i < lems)
-	{
-		if (lem->lems[i][1] == nb_room)
-			return (0);
-		i++;
-	}
-	return (1);
+    i = 0;
+    while (i < lem->size && path->path[i] != -1)
+    {
+        if (path->path[i] == room)
+            return (i);
+        i++;
+    }
+    return (-1);
 }
 
-int 	ft_find_room(t_lem *lem, t_path *way, int active_lem)
+void    ft_move_lem(t_lem *lem, t_path *path, t_room *head_room)
 {
-	int i;
+    uintmax_t   init;
+    uintmax_t   index;
+    int         pos;
+    t_room      *next_room;
+    t_room      *current_room;
+    t_path      *start;
 
-	i = lem->lems[active_lem][1] + 1;
-	while (i < lem->size)
-	{
-		if (way->path[i] == 1)
-			return (i);
-		i++;
-	}
-	return (-1);
+    init = lem->ants;
+    while (lem->ants > 0)
+    {
+        index = (init - lem->ants) + 1;
+        while (index <= init)
+        {
+            start = path;
+            current_room = ft_where_the_ant_is(head_room, index);
+            while (start)
+            {
+                pos = ft_position_in_path(lem, start, current_room->id);
+                if (pos != -1)
+                {
+                    pos++;
+                    next_room = ft_get_room(head_room, start->path[pos]);
+                    if (next_room->active_lem == 0)
+                    {
+                        current_room->active_lem = 0;
+                        next_room->active_lem = index;
+                        ft_printf("L%d-", index);
+                        ft_printf("%s ", next_room->name);
+                        if (next_room->id == lem->size - 1)
+                        {
+                            lem->ants--;
+                            next_room->active_lem = 0;
+                        }
+                        break ;
+                    }
+                }
+                start = start->next;
+            }
+            index++;
+        }
+        ft_printf("\n");
+    }
 }

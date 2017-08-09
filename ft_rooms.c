@@ -69,32 +69,6 @@ void    ft_swap_nodes_rooms(t_room *node_1, t_room *node_2)
     free(temp);
 }
 
-void    ft_sort_rooms(t_room *head)
-{
-    t_room *current;
-    t_room *start;
-    t_room *min;
-
-    if (head->next)
-        start= head->next;
-    else
-        return ;
-    while (start)
-    {
-        min = start;
-        current = min;
-        while (current->next)
-        {
-            if (ft_string_compare(min->name, current->name))
-                min = current;
-            current = current->next;
-        }
-        if (min != start)
-            ft_swap_nodes_rooms(start, min);
-        start = start->next;
-    }
-}
-
 void    ft_sort_path(t_path *head)
 {
    t_path *current;
@@ -112,9 +86,7 @@ void    ft_sort_path(t_path *head)
        while (current)
        {
            if (min->length > current->length)
-           {
                min = current;
-           }
            current = current->next;
        }
        if (min != start)
@@ -149,7 +121,7 @@ t_room    *ft_create_room(t_lem *lem, char *data)
     if (ft_count_char(data, ' ') != 2)
         ft_error();
     splitted = ft_strsplit(data, ' ');
-    if (splitted[0][0] && splitted[0][0] != 'L' && splitted[0][0] != '#')
+    if (splitted[0][0] && splitted[0][0] != 'L' && splitted[0][0] != '#' && ft_count_char(splitted[0], '-') == 0)
         node->name = ft_strdup(splitted[0]);
     else
         ft_error();
@@ -179,6 +151,7 @@ t_room    *ft_create_room(t_lem *lem, char *data)
         node->start = 0;
         node->end = 0;
     }
+    node->active_lem = 0;
     return (node);
 }
 

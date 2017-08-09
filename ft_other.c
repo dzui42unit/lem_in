@@ -16,15 +16,6 @@ int     ft_count_char(char *str, char ch)
     return (nb);
 }
 
-int     ft_string_compare(char *str_1, char *str_2)
-{
-    if (ft_strlen(str_1) == ft_strlen(str_2) && ft_strcmp(str_1, str_2) > 0)
-        return (1);
-    if (ft_strlen(str_1) > ft_strlen(str_2))
-        return (1);
-    return (0);
-}
-
 uintmax_t   ft_atoi_unsigned(char *str)
 {
     uintmax_t   number;

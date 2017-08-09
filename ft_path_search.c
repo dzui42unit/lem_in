@@ -1,9 +1,25 @@
 #include "lem_in.h"
 
+int     ft_get_last_in_queue(int *queue, int size)
+{
+    int  i;
+
+    i = 0;
+    if (queue[size - 1] != -1)
+        return (queue[size - 1]);
+    while (i < size - 1)
+    {
+        if (queue[i + 1] == -1)
+            break ;
+        i++;
+    }
+    return (queue[i]);
+}
+
 void    ft_depth_first_search(t_lem *lem, t_room *head_room, int *visited, t_path **head_path)
 {
-    int i;
     int current;
+    int next;
     int queue[lem->size];
 
     if (ft_path_finished(lem, head_room, visited))
@@ -14,23 +30,20 @@ void    ft_depth_first_search(t_lem *lem, t_room *head_room, int *visited, t_pat
             ft_append_path(head_path, lem, visited);
         ft_remove_last_visited(lem, visited);
         lem->index -= 1;
+        lem->counter++;
         return ;
     }
     ft_assign_queue(lem, queue, visited, lem->size);
-    while (queue[0] != -1)
+    while (queue[0] != -1 && lem->counter < 1000)
     {
-        i = 0;
         current = ft_get_last_visited(lem, visited);
-        while (i < lem->size && queue[i] != -1)
+        next = ft_get_last_in_queue(queue, lem->size);
+        if (ft_rooms_connection(lem, current, next) && !ft_was_visited(lem, next, visited))
         {
-            if (ft_rooms_connection(lem, current, queue[i]) && !ft_was_visited(lem, queue[i], visited))
-            {
-                visited[lem->index] = queue[i];
-                lem->index++;
-                ft_remove_queue_elem(lem, queue, lem->size, queue[i]);
-                ft_depth_first_search(lem, head_room, visited, head_path);
-            }
-            i++;
+            visited[lem->index] = next;
+            lem->index++;
+            ft_remove_queue_elem(lem, queue, lem->size, next);
+            ft_depth_first_search(lem, head_room, visited, head_path);
         }
     }
     ft_remove_last_visited(lem, visited);
