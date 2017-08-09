@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dzui <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/16 16:19:37 by dzui              #+#    #+#             */
-/*   Updated: 2017/01/11 13:32:44 by dzui             ###   ########.fr       */
+/*   Created: 2016/11/22 12:22:41 by dzui              #+#    #+#             */
+/*   Updated: 2016/11/25 18:09:35 by dzui             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include <string.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include "libft/libft.h"
+int		ft_memcmp(const void *s1, const void *s2, size_t n)
+{
+	const unsigned char		*temp_s1;
+	const unsigned char		*temp_s2;
+	size_t					i;
 
-# define BUFF_SIZE 100
-
-int		get_next_line(const int fd, char **line);
-
-#endif
-
+	i = 0;
+	temp_s1 = (unsigned char *)s1;
+	temp_s2 = (unsigned char *)s2;
+	while (i < n)
+	{
+		if (temp_s1[i] != temp_s2[i])
+			return (temp_s1[i] - temp_s2[i]);
+		i++;
+	}
+	return (0);
+}

@@ -1,28 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dzui <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/16 16:19:37 by dzui              #+#    #+#             */
-/*   Updated: 2017/01/11 13:32:44 by dzui             ###   ########.fr       */
+/*   Created: 2016/12/02 19:55:22 by dzui              #+#    #+#             */
+/*   Updated: 2016/12/02 19:55:37 by dzui             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include <string.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include "libft/libft.h"
-
-# define BUFF_SIZE 100
-
-int		get_next_line(const int fd, char **line);
-
-#endif
-
+int		ft_isspace(int ch)
+{
+	if (ch == ' ' || ch == '\t' || ch == '\n'
+		|| ch == '\v' || ch == '\r' || ch == '\f')
+		return (1);
+	return (0);
+}

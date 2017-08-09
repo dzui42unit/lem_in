@@ -1,28 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dzui <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/16 16:19:37 by dzui              #+#    #+#             */
-/*   Updated: 2017/01/11 13:32:44 by dzui             ###   ########.fr       */
+/*   Created: 2016/11/22 15:28:46 by dzui              #+#    #+#             */
+/*   Updated: 2016/11/22 15:36:58 by dzui             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include <string.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include "libft/libft.h"
+char	*ft_strrchr(const char *str, int c)
+{
+	int				i;
+	int				pos;
 
-# define BUFF_SIZE 100
-
-int		get_next_line(const int fd, char **line);
-
-#endif
-
+	i = 0;
+	pos = -1;
+	while (str[i] != '\0')
+	{
+		if (str[i] == (char)c)
+			pos = i;
+		i++;
+	}
+	if ((str[i] == (char)c) && ((char)c == '\0'))
+		return ((char *)(str + i));
+	if (pos == -1)
+		return (NULL);
+	return ((char *)(str + pos));
+}

@@ -1,6 +1,6 @@
 #include "lem_in.h"
 
-t_room    *ft_append_element(t_room *head, t_lem *lem, char *data)
+void    ft_append_element(t_room *head, t_lem *lem, char *data)
 {
     t_room  *conductor;
     t_room  *new_node;
@@ -10,7 +10,6 @@ t_room    *ft_append_element(t_room *head, t_lem *lem, char *data)
         conductor = conductor->next;
     new_node = ft_create_room(lem, data);
     conductor->next = new_node;
-    return (new_node);
 }
 
 int     ft_list_size(t_room *head)
@@ -110,6 +109,19 @@ void    ft_swap_nodes_path(t_path *node_1, t_path *node_2)
    free(temp);
 }
 
+void    ft_free_splitted(char **str)
+{
+    int i;
+
+    i = 0;
+    while (str[i])
+    {
+        free(str[i]);
+        i++;
+    }
+    free(str);
+}
+
 t_room    *ft_create_room(t_lem *lem, char *data)
 {
     t_room  *node;
@@ -133,6 +145,7 @@ t_room    *ft_create_room(t_lem *lem, char *data)
         node->y = ft_atoi_unsigned(splitted[2]);
     else
         ft_error();
+    ft_free_splitted(splitted);
     node->next = NULL;
     if (lem->start == 1)
     {

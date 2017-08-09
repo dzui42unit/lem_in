@@ -1,0 +1,121 @@
+1
+#BLUE LINE
+HeroivDnipra 1 1
+Minska 2 2
+Obolon 3 3
+Petrivka 4 4
+TS 5 5
+KontraktovaPloshcha 6 6
+Poshtova 7 7
+MaidanNezalezhnosti 8 8
+PloshchaLvaTolstoho 9 9
+Olimpiiska 10 10
+PalatsUkrayina 11 11
+lybidska 12 12
+Demiivska 13 13
+Holosiivska 14 14
+Vasylkivska 15 15
+VystavkovyiTsentr 16 16
+Ipodrom 17 17
+##end
+Teremky 18 18
+#GREEN LINE
+Syrets 12 1
+##start
+Dorohozhychi 22 2
+lukianivska 32 3
+ZolotiVorota 42 4
+PalatsSportu 52 5
+Klovska 62 6
+Pecherska 72 7
+DruzhbyNarodiv 82 8
+Vydubychi 92 9
+Slavutych 102 10
+Osokorky 112 11
+Pozniaky 122 12
+Kharkivska 132 13
+Vyrlytsia 142 14
+Boryspilska 152 15
+ChervonyKhutir 162 16
+#RED LINE
+Akademmistechko 13 1
+Zhytomyrska 23 2
+Sviatoshyn 33 3
+Nyvky 43 4
+Beresteiska 53 5
+Shuliavska 63 6
+PolitekhnichnyiInstytut 73 7
+Vokzalna 83 8
+Universytet 93 9
+Teatralna 103 10
+Khreshchatyk 113 11
+Arsenalna 123 12
+Dnipro 133 13
+Hidropark 143 14
+livoberezhna 153 15
+Darnytsia 163 16
+Chernihivska 173 17
+lisova 183 18
+#LINKS RED
+#
+Akademmistechko-Zhytomyrska
+Zhytomyrska-Sviatoshyn
+Sviatoshyn-Nyvky
+Nyvky-Beresteiska
+Beresteiska-Shuliavska
+Shuliavska-PolitekhnichnyiInstytut
+PolitekhnichnyiInstytut-Vokzalna
+Vokzalna-Universytet
+Universytet-Teatralna
+Teatralna-Khreshchatyk
+Khreshchatyk-Arsenalna
+Arsenalna-Dnipro
+Dnipro-Hidropark
+Hidropark-livoberezhna
+livoberezhna-Darnytsia
+#tyt
+Darnytsia-Chernihivska
+Chernihivska-lisova
+#
+Teatralna-ZolotiVorota
+Khreshchatyk-MaidanNezalezhnosti
+#BLUE LINKS
+HeroivDnipra-Minska
+Minska-Obolon
+Obolon-Petrivka
+Petrivka-TS
+TS-KontraktovaPloshcha
+KontraktovaPloshcha-Poshtova
+Poshtova-MaidanNezalezhnosti
+MaidanNezalezhnosti-PloshchaLvaTolstoho
+PloshchaLvaTolstoho-Olimpiiska
+Olimpiiska-PalatsUkrayina
+PalatsUkrayina-lybidska
+lybidska-Demiivska
+Demiivska-Holosiivska
+Holosiivska-Vasylkivska
+Vasylkivska-VystavkovyiTsentr
+VystavkovyiTsentr-Ipodrom
+Ipodrom-Teremky
+#
+MaidanNezalezhnosti-Khreshchatyk
+PloshchaLvaTolstoho-PalatsSportu
+#GREEN LINKS
+Syrets-Dorohozhychi
+Dorohozhychi-lukianivska
+lukianivska-ZolotiVorota
+ZolotiVorota-PalatsSportu
+PalatsSportu-Klovska
+Klovska-Pecherska
+Pecherska-DruzhbyNarodiv
+DruzhbyNarodiv-Vydubychi
+Vydubychi-Slavutych
+Slavutych-Osokorky
+Osokorky-Pozniaky
+Pozniaky-Kharkivska
+Kharkivska-Vyrlytsia
+Vyrlytsia-Boryspilska
+Boryspilska-ChervonyKhutir
+#
+ZolotiVorota-Teatralna
+PalatsSportu-PloshchaLvaTolstoho

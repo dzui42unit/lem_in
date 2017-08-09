@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_star_n.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dzui <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/16 16:19:37 by dzui              #+#    #+#             */
-/*   Updated: 2017/01/11 13:32:44 by dzui             ###   ########.fr       */
+/*   Created: 2017/05/13 19:03:50 by dzui              #+#    #+#             */
+/*   Updated: 2017/05/13 19:03:57 by dzui             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "ft_printf.h"
 
-# include <string.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include "libft/libft.h"
+void	ft_n(t_flags *fl)
+{
+	unsigned int *i;
 
-# define BUFF_SIZE 100
+	i = va_arg(fl->arg_ptr, unsigned int *);
+	*i = (unsigned int)fl->counter;
+}
 
-int		get_next_line(const int fd, char **line);
+int		ft_star(t_flags *fl)
+{
+	int number;
 
-#endif
-
+	number = va_arg(fl->arg_ptr, int);
+	return (number);
+}

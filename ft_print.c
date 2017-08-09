@@ -1,22 +1,5 @@
 #include "lem_in.h"
 
-void 	ft_print_rooms(t_room *head)
-{
-    t_room *st;
-
-    st = head;
-    while (st)
-    {
-        ft_printf("Name: %s\n", st->name);
-        ft_printf("Id: %d\n", st->id);
-        ft_printf("Start: %d\n", st->start);
-        ft_printf("End: %d\n", st->end);
-        ft_printf("Lem: %d\n", st->active_lem);
-        ft_printf("\n");
-        st = st->next;
-    }
-}
-
 void	ft_print_path(t_lem *lem, t_room *head, t_path *head_path)
 {
     int 	i;

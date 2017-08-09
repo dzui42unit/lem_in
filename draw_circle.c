@@ -121,7 +121,7 @@ int 	ft_visual(t_lem *lem)
 		j = 0;
 		while (j < lem->size)
 		{
-			if (lem->init[i][j] == 1)
+			if (lem->adj_matrix[i][j] == 1)
 			{
 				start = ft_get_room(lem->head, i);
 				end = ft_get_room(lem->head, j);
