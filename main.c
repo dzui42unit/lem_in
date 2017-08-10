@@ -1,100 +1,129 @@
 #include "lem_in.h"
 
-void    ft_join(t_lem *lem, char *str2)
+void    ft_initial_reading(t_lem *lem, char *buff)
 {
-    char *res;
-    char *temp;
-
-    temp = lem->input_data;
-    res = (char *)malloc((2 + ft_strlen(lem->input_data) + ft_strlen(str2)) * sizeof(char));
-    ft_strcpy(res, lem->input_data);
-    ft_strcat(res, str2);
-    ft_strcat(res, "\n");
-    free(temp);
-    lem->input_data = res;
-}
-
-void    ft_free_rooms(t_room *head)
-{
-    t_room *start;
-    t_room *temp;
-
-    start = head;
-    while (start)
-    {
-        temp = start;
-        free(start->name);
-        start = start->next;
-        free(temp);
-    }
-}
-
-void    ft_free_path(t_path *path)
-{
-    t_path *start;
-    t_path *temp;
-
-    start = path;
-    while (start)
-    {
-        temp = start;
-        free(start->path);
-        start = start->next;
-        free(temp);
-    }
-}
-
-int     main(void)
-{
-    t_lem   lem;
-    t_room  *head_room;
-    t_path  *head_path;
-    char 	*buff;
-
-    head_room = NULL;
-    head_path = NULL;
-    lem.start = 0;
-    lem.end = 0;
-	lem.show_path = 0;
-    lem.input_data = ft_strnew(1);
+    lem->start = 0;
+    lem->end = 0;
+    lem->show_path = 0;
+    lem->start_counter = 0;
+    lem->end_counter = 0;
+    lem->input_data = ft_strnew(1);
+    lem->radius = 30;
+    lem->visual = 0;
+    lem->radius_2 = lem->radius * lem->radius;
     while (get_next_line(0, &buff) && buff[0] == '#')
     {
-    	if (ft_strequ(buff, "##start") || ft_strequ(buff, "##end") || ft_strequ(buff, "##path"))
+        if (ft_strequ(buff, "##start") || ft_strequ(buff, "##end")
+            || ft_strequ(buff, "##path") || ft_strequ(buff, "##visual"))
             ft_error();
         free(buff);
     }
     if (!ft_check_number(buff) || ft_strequ(buff, ""))
         ft_error();
-    lem.ants = ft_atoi_unsigned(buff);
-    ft_join(&lem, buff);
+    lem->ants = ft_atoi_unsigned(buff);
+    ft_join(lem, buff);
     free(buff);
-    int start = 0;
-    int end = 0;
+}
+
+void    ft_process_commands(t_lem *lem, char *buff)
+{
+    if (ft_strequ(buff, "##start"))
+    {
+        ft_join(lem, buff);
+        lem->start_counter++;
+        lem->start = lem->start_counter;
+    }
+    if (ft_strequ(buff, "##end"))
+    {
+        ft_join(lem, buff);
+        lem->end_counter++;
+        lem->end = lem->end_counter;
+    }
+    if (ft_strequ(buff, "##path"))
+        lem->show_path = 1;
+    if (ft_strequ(buff, "##visual"))
+        lem->visual = 1;
+}
+
+void    ft_free_matrix(t_lem *lem)
+{
+    int i;
+
+    i = 0;
+    while (i < lem->size)
+    {
+        free(lem->adj_matrix[i]);
+        i++;
+    }
+    free(lem->adj_matrix);
+}
+
+void    ft_finish_search(t_lem *lem, t_path *head_path, t_room *head_room)
+{
+    ft_sort_path(head_path);
+    ft_printf("%s", lem->input_data);
+    if (lem->show_path == 1)
+        ft_print_path(lem, head_room, head_path);
+    ft_printf("\n");
+    lem->path = head_path;
+    lem->head = head_room;
+    lem->flag = 0;
+    lem->init = lem->ants;
+    if (lem->visual)
+        ft_draw_graph(lem);
+    ft_move_lem_visual(lem, head_path, head_room);
+    ft_free_rooms(head_room);
+    ft_free_path(head_path);
+    ft_free_matrix(lem);
+}
+
+void    ft_start_search(t_lem *lem, t_room *head_room, char *buff)
+{
+    t_path *head_path;
+
+    head_path = NULL;
+    if (!ft_check_dupliactes(head_room))
+        ft_error();
+    if (!ft_check_start_end(head_room))
+        ft_error();
+    ft_set_start(head_room);
+    ft_set_end(head_room);
+    ft_set_id(head_room);
+    lem->size = ft_list_size(head_room);
+    ft_make_matrix(head_room, lem, buff);
+    lem->visited[0] = (ft_get_room(head_room, 0))->id;
+    lem->index = 1;
+    lem->counter = 0;
+    ft_depth_first_search(lem, head_room, lem->visited, &head_path);
+    if (head_path == NULL)
+        ft_error();
+    ft_finish_search(lem, head_path, head_room);
+}
+
+void    ft_handle_errors(t_lem *lem, char *buff)
+{
+    if (ft_count_char(buff, '-') > 1 || buff[0] == '-')
+        ft_error();
+    if (ft_strequ(buff, "") || lem->start_counter > 1 || lem->end_counter > 1)
+        ft_error();
+}
+
+int     main(void)
+{
+    t_room  *head_room;
+    t_lem   lem;
+    char 	*buff;
+
+    buff = NULL;
+    head_room = NULL;
+    ft_initial_reading(&lem, buff);
     while (get_next_line(0, &buff))
     {
     	if (ft_count_char(buff, '-') == 1 && buff[0] != '-')
     		break ;
-    	if (ft_count_char(buff, '-') > 1 || buff[0] == '-')
-            ft_error();
-    	if (ft_strequ(buff, "") || start > 1 || end > 1)
-            ft_error();
+        ft_handle_errors(&lem, buff);
         if (buff[0] == '#')
-        {
-            if (ft_strequ(buff, "##start"))
-            {
-                ft_join(&lem, buff);
-                start++;
-                lem.start = start;
-            }
-            if (ft_strequ(buff, "##end"))
-            {
-                ft_join(&lem, buff);
-                end++;
-                lem.end = end;
-            }
-            if (ft_strequ(buff, "##path"))
-                lem.show_path = 1;
-        }
+            ft_process_commands(&lem, buff);
         else
         {
             if (head_room == NULL)
@@ -105,28 +134,6 @@ int     main(void)
         }
         free(buff);
     }
-    if (!ft_check_dupliactes(head_room))
-        ft_error();
-    if (!ft_check_start_end(head_room))
-        ft_error();
-    ft_set_start(head_room);
-    ft_set_end(head_room);
-    ft_set_id(head_room);
-    lem.size = ft_list_size(head_room);
-    ft_make_matrix(head_room, &lem, buff);
-    lem.visited[0] = (ft_get_room(head_room, 0))->id;
-    lem.index = 1;
-    lem.counter = 0;
-    ft_depth_first_search(&lem, head_room, lem.visited, &head_path);
-    if (head_path == NULL)
-        ft_error();
-    ft_sort_path(head_path);
-    ft_printf("%s", lem.input_data);
-    if (lem.show_path == 1)
-        ft_print_path(&lem, head_room, head_path);
-    ft_printf("\n");
-    ft_move_lem(&lem, head_path, head_room);
-    ft_free_rooms(head_room);
-    ft_free_path(head_path);
+    ft_start_search(&lem, head_room, buff);
     return (0);
 }

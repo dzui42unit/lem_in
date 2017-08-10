@@ -1,9 +1,27 @@
 #include "lem_in.h"
 
+void    ft_print_parts(t_lem *lem, t_path *node, t_room *head)
+{
+    int i;
+    int j;
+
+    i = 0;
+    j = 0;
+    while (i < lem->size && node->path[i] != -1)
+    {
+        ft_printf("%s", ft_get_room(head, node->path[i])->name);
+        if (j < node->length - 1)
+        {
+            ft_printf(" -> ");
+            j++;
+        }
+        i++;
+    }
+}
+
 void	ft_print_path(t_lem *lem, t_room *head, t_path *head_path)
 {
-    int 	i;
-    int 	j;
+
     int 	counter;
     t_path 	*current;
 
@@ -12,43 +30,16 @@ void	ft_print_path(t_lem *lem, t_room *head, t_path *head_path)
     ft_printf("\n");
     while (current)
     {
-        i = 0;
-        j = 0;
         ft_printf("path #%d\n", counter + 1);
-        while (i < lem->size && current->path[i] != -1)
-        {
-            ft_printf("%s", ft_get_room(head, current->path[i])->name);
-            if (j < current->length - 1)
-            {
-                ft_printf(" -> ");
-                j++;
-            }
-            i++;
-        }
+        ft_print_parts(lem, current, head);
         counter++;
         current = current->next;
         ft_printf("\n");
     }
-    ft_printf("\n");
 }
 
 void    ft_error()
 {
     ft_printf("ERROR\n");
     exit(0);
-}
-
-t_room	*ft_get_room(t_room *head, int pos)
-{
-	int     i;
-    t_room *start;
-
-    i = 0;
-    start = head;
-    while (i < pos && start->next)
-    {
-        start = start->next;
-        i++;
-    }
-    return (start);
 }

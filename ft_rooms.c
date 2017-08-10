@@ -1,5 +1,20 @@
 #include "lem_in.h"
 
+t_room	*ft_get_room(t_room *head, int pos)
+{
+    int     i;
+    t_room *start;
+
+    i = 0;
+    start = head;
+    while (i < pos && start->next)
+    {
+        start = start->next;
+        i++;
+    }
+    return (start);
+}
+
 void    ft_append_element(t_room *head, t_lem *lem, char *data)
 {
     t_room  *conductor;
@@ -122,6 +137,29 @@ void    ft_free_splitted(char **str)
     free(str);
 }
 
+void    ft_set_rooms_parameters(t_lem *lem, t_room *node)
+{
+    node->next = NULL;
+    if (lem->start == 1)
+    {
+        node->start = 1;
+        node->end = 0;
+        lem->start = 0;
+    }
+    else if (lem->end == 1)
+    {
+        node->start = 0;
+        node->end = 1;
+        lem->end = 0;
+    }
+    else
+    {
+        node->start = 0;
+        node->end = 0;
+    }
+    node->active_lem = 0;
+}
+
 t_room    *ft_create_room(t_lem *lem, char *data)
 {
     t_room  *node;
@@ -146,25 +184,7 @@ t_room    *ft_create_room(t_lem *lem, char *data)
     else
         ft_error();
     ft_free_splitted(splitted);
-    node->next = NULL;
-    if (lem->start == 1)
-    {
-        node->start = 1;
-        node->end = 0;
-        lem->start = 0;
-    }
-    else if (lem->end == 1)
-    {
-        node->start = 0;
-        node->end = 1;
-        lem->end = 0;
-    }
-    else
-    {
-        node->start = 0;
-        node->end = 0;
-    }
-    node->active_lem = 0;
+    ft_set_rooms_parameters(lem, node);
     return (node);
 }
 
