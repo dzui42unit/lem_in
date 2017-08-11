@@ -28,6 +28,7 @@ void	ft_initial_reading(t_lem *lem, char *buff)
 		if (ft_strequ(buff, "##start") || ft_strequ(buff, "##end")
 			|| ft_strequ(buff, "##path") || ft_strequ(buff, "##visual"))
 			ft_error();
+        ft_join(lem, buff);
 		free(buff);
 	}
 	if (!ft_check_number(buff) || ft_strequ(buff, ""))
@@ -41,13 +42,11 @@ void	ft_process_commands(t_lem *lem, char *buff)
 {
 	if (ft_strequ(buff, "##start"))
 	{
-		ft_join(lem, buff);
 		lem->start_counter++;
 		lem->start = lem->start_counter;
 	}
 	if (ft_strequ(buff, "##end"))
 	{
-		ft_join(lem, buff);
 		lem->end_counter++;
 		lem->end = lem->end_counter;
 	}
@@ -120,8 +119,8 @@ int		main(void)
 				lem.head = ft_create_room(&lem, buff);
 			else
 				ft_append_element(lem.head, &lem, buff);
-			ft_join(&lem, buff);
 		}
+        ft_join(&lem, buff);
 		free(buff);
 	}
 	ft_start_search(&lem, lem.head, buff);
