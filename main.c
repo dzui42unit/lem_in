@@ -57,19 +57,6 @@ void	ft_process_commands(t_lem *lem, char *buff)
 		lem->visual = 1;
 }
 
-void	ft_free_matrix(t_lem *lem)
-{
-	int i;
-
-	i = 0;
-	while (i < lem->size)
-	{
-		free(lem->adj_matrix[i]);
-		i++;
-	}
-	free(lem->adj_matrix);
-}
-
 void	ft_finish_search(t_lem *lem, t_path *head_path, t_room *head_room)
 {
 	ft_sort_path(head_path);
@@ -110,14 +97,6 @@ void	ft_start_search(t_lem *lem, t_room *head_room, char *buff)
 	if (head_path == NULL)
 		ft_error();
 	ft_finish_search(lem, head_path, head_room);
-}
-
-void	ft_handle_errors(t_lem *lem, char *buff)
-{
-	if (ft_count_char(buff, '-') > 1 || buff[0] == '-')
-		ft_error();
-	if (ft_strequ(buff, "") || lem->start_counter > 1 || lem->end_counter > 1)
-		ft_error();
 }
 
 int		main(void)

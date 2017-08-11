@@ -48,9 +48,3 @@ void	ft_print_path(t_lem *lem, t_room *head, t_path *head_path)
 		ft_printf("\n");
 	}
 }
-
-void	ft_error(void)
-{
-	ft_printf("ERROR\n");
-	exit(0);
-}

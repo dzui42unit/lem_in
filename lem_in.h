@@ -57,7 +57,6 @@ typedef struct		s_lem
 	int				show_path;
 	int				counter;
 	int				flag;
-	float			t1;
 	int				visual;
 	int				radius;
 	int				radius_2;
@@ -84,7 +83,6 @@ t_room				*ft_where_the_ant_is(t_room *head, uintmax_t active_lem);
 t_room				*ft_create_room(t_lem *lem, char *data);
 t_room				*ft_get_room(t_room *head, int pos);
 t_path				*ft_create_path(t_lem *lem, int *visited);
-void				ft_next_move(t_lem *lem, int *queue, int *visited);
 void				ft_append_path(t_path **head, t_lem *lem, int *visited);
 void				ft_append_element(t_room *head, t_lem *lem, char *data);
 void				ft_initial_reading(t_lem *lem, char *buff);
@@ -114,6 +112,8 @@ void				ft_assign_queue(t_lem *lem, int *queue,
 						int *visited, int size);
 void				ft_remove_queue_elem(t_lem *lem, int *queue,
 						int size, int elem);
+void				ft_free_data(t_lem *lem);
+void				ft_print_lems_in_rooms(t_lem *lem, t_room *room);
 void				ft_remove_last_visited(t_lem *lem, int *visited);
 void				img_clear(t_lem *lem);
 void				ft_draw_nodes(t_lem *lem, t_room *head);

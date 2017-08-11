@@ -12,48 +12,6 @@
 
 #include "lem_in.h"
 
-t_room	*ft_get_room(t_room *head, int pos)
-{
-	t_room	*start;
-	int		i;
-
-	i = 0;
-	start = head;
-	while (i < pos && start->next)
-	{
-		start = start->next;
-		i++;
-	}
-	return (start);
-}
-
-void	ft_append_element(t_room *head, t_lem *lem, char *data)
-{
-	t_room	*conductor;
-	t_room	*new_node;
-
-	conductor = head;
-	while (conductor->next)
-		conductor = conductor->next;
-	new_node = ft_create_room(lem, data);
-	conductor->next = new_node;
-}
-
-int		ft_list_size(t_room *head)
-{
-	t_room	*current;
-	int		size;
-
-	size = 0;
-	current = head;
-	while (current)
-	{
-		size++;
-		current = current->next;
-	}
-	return (size);
-}
-
 int		ft_find_list_element(t_room *head, char *key)
 {
 	t_room	*start;
@@ -92,60 +50,6 @@ void	ft_swap_nodes_rooms(t_room *node_1, t_room *node_2)
 	node_2->start = temp->start;
 	node_2->end = temp->end;
 	free(temp);
-}
-
-void	ft_sort_path(t_path *head)
-{
-	t_path	*current;
-	t_path	*start;
-	t_path	*min;
-
-	if (head)
-		start = head;
-	else
-		return ;
-	while (start)
-	{
-		min = start;
-		current = min->next;
-		while (current)
-		{
-			if (min->length > current->length)
-				min = current;
-			current = current->next;
-		}
-		if (min != start)
-			ft_swap_nodes_path(start, min);
-		start = start->next;
-	}
-}
-
-void	ft_swap_nodes_path(t_path *node_1, t_path *node_2)
-{
-	t_path	*temp;
-
-	temp = (t_path *)malloc(sizeof(t_path));
-	temp->length = node_1->length;
-	temp->path = node_1->path;
-	node_1->length = node_2->length;
-	node_1->path = node_2->path;
-	node_2->length = temp->length;
-	node_2->path = temp->path;
-	temp->path = NULL;
-	free(temp);
-}
-
-void	ft_free_splitted(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		free(str[i]);
-		i++;
-	}
-	free(str);
 }
 
 void	ft_set_rooms_parameters(t_lem *lem, t_room *node)
@@ -198,43 +102,4 @@ t_room	*ft_create_room(t_lem *lem, char *data)
 	ft_free_splitted(splitted);
 	ft_set_rooms_parameters(lem, node);
 	return (node);
-}
-
-t_path	*ft_create_path(t_lem *lem, int *visited)
-{
-	t_path	*node;
-	int		i;
-	int		len;
-
-	node = (t_path *)malloc(sizeof(t_path));
-	if (node == NULL)
-	{
-		ft_printf("ERROR!\n");
-		exit(0);
-	}
-	node->path = (int *)malloc(sizeof(int) * lem->size);
-	i = 0;
-	len = 0;
-	while (i < lem->size)
-	{
-		node->path[i] = visited[i];
-		if (visited[i] != -1)
-			len++;
-		i++;
-	}
-	node->length = len;
-	node->next = NULL;
-	return (node);
-}
-
-void	ft_append_path(t_path **head, t_lem *lem, int *visited)
-{
-	t_path	*conductor;
-	t_path	*new_node;
-
-	conductor = *head;
-	while (conductor->next)
-		conductor = conductor->next;
-	new_node = ft_create_path(lem, visited);
-	conductor->next = new_node;
 }
