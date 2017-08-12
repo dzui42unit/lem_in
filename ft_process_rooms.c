@@ -12,6 +12,23 @@
 
 #include "lem_in.h"
 
+void	ft_move_thread(t_lem *lem, t_path *start,
+			t_room *head, uintmax_t index)
+{
+	t_room *current_room;
+
+	current_room = ft_where_the_ant_is(head, index + 1);
+	while (start)
+	{
+		if (ft_make_step(lem, start, current_room, index))
+		{
+			lem->flag = 1;
+			break ;
+		}
+		start = start->next;
+	}
+}
+
 t_room	*ft_get_room(t_room *head, int pos)
 {
 	t_room	*start;

@@ -53,17 +53,15 @@ int			ft_make_step(t_lem *lem, t_path *start,
 		if (next_room->active_lem == 0)
 		{
 			cur->active_lem = 0;
-			next_room->active_lem = index;
-			if (!lem->visual)
+			if (next_room->id != lem->size - 1)
+				next_room->active_lem = index + 1;
+			else
 			{
-				ft_printf("L%d-", index);
-				ft_printf("%s ", next_room->name);
-			}
-			if (next_room->id == lem->size - 1)
-			{
+				lem->lems[index] = -1;
 				lem->ants--;
-				next_room->active_lem = 0;
 			}
+			if (!lem->visual)
+				ft_printf("L%d-%s ", index + 1, next_room->name);
 			return (1);
 		}
 	}
@@ -73,19 +71,18 @@ int			ft_make_step(t_lem *lem, t_path *start,
 void		ft_move_lem_visual(t_lem *lem, t_path *path, t_room *head_room)
 {
 	uintmax_t	index;
-	t_room		*current_room;
 	t_path		*start;
 
-	index = (lem->init - lem->ants) + 1;
-	while (index <= lem->init)
+	index = 0;
+	while (index < lem->init)
 	{
-		start = path;
-		current_room = ft_where_the_ant_is(head_room, index);
-		while (start)
+		lem->flag = 0;
+		if (lem->lems[index] != -1)
 		{
-			if (ft_make_step(lem, start, current_room, index))
+			start = path;
+			ft_move_thread(lem, start, head_room, index);
+			if (!lem->flag)
 				break ;
-			start = start->next;
 		}
 		index++;
 	}
@@ -93,25 +90,21 @@ void		ft_move_lem_visual(t_lem *lem, t_path *path, t_room *head_room)
 
 void		ft_move_lem(t_lem *lem, t_path *path, t_room *head_room)
 {
-	uintmax_t	init;
 	uintmax_t	index;
-	t_room		*current_room;
 	t_path		*start;
 
-	lem->head = head_room;
-	init = lem->ants;
 	while (lem->ants > 0)
 	{
-		index = (init - lem->ants) + 1;
-		while (index <= init)
+		index = 0;
+		while (index < lem->init)
 		{
-			start = path;
-			current_room = ft_where_the_ant_is(head_room, index);
-			while (start)
+			lem->flag = 0;
+			if (lem->lems[index] != -1)
 			{
-				if (ft_make_step(lem, start, current_room, index))
+				start = path;
+				ft_move_thread(lem, start, head_room, index);
+				if (!lem->flag)
 					break ;
-				start = start->next;
 			}
 			index++;
 		}

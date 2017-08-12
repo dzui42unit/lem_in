@@ -28,7 +28,7 @@ void	ft_initial_reading(t_lem *lem, char *buff)
 		if (ft_strequ(buff, "##start") || ft_strequ(buff, "##end")
 			|| ft_strequ(buff, "##path") || ft_strequ(buff, "##visual"))
 			ft_error();
-        ft_join(lem, buff);
+		ft_join(lem, buff);
 		free(buff);
 	}
 	if (!ft_check_number(buff) || ft_strequ(buff, ""))
@@ -60,19 +60,22 @@ void	ft_finish_search(t_lem *lem, t_path *head_path, t_room *head_room)
 {
 	ft_sort_path(head_path);
 	ft_printf("%s", lem->input_data);
-	if (lem->show_path == 1)
-		ft_print_path(lem, head_room, head_path);
-	ft_printf("\n");
 	lem->path = head_path;
 	lem->head = head_room;
 	lem->flag = 0;
 	lem->init = lem->ants;
+	ft_search_parallel_paths(lem);
+	if (lem->show_path == 1)
+		ft_print_path(lem, head_room, head_path);
+	ft_assign_lems(lem);
+	ft_printf("\n");
 	if (lem->visual)
 		ft_draw_graph(lem);
 	ft_move_lem(lem, head_path, head_room);
 	ft_free_rooms(head_room);
 	ft_free_path(head_path);
 	ft_free_matrix(lem);
+	free(lem->lems);
 }
 
 void	ft_start_search(t_lem *lem, t_room *head_room, char *buff)
@@ -120,7 +123,7 @@ int		main(void)
 			else
 				ft_append_element(lem.head, &lem, buff);
 		}
-        ft_join(&lem, buff);
+		ft_join(&lem, buff);
 		free(buff);
 	}
 	ft_start_search(&lem, lem.head, buff);

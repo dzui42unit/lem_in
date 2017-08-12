@@ -17,7 +17,8 @@ SRC = main.c \
 	ft_process_queue.c \
 	ft_process_rooms.c \
 	ft_pixel.c \
-	ft_draw_graph.c
+	ft_draw_graph.c \
+	ft_optimize_path.c
 
 OBJ        = $(SRC:.c=.o)
 

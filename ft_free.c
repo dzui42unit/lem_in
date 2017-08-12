@@ -19,6 +19,7 @@ void	ft_free_data(t_lem *lem)
 		ft_free_rooms(lem->head);
 		ft_free_path(lem->path);
 		ft_free_matrix(lem);
+		free(lem->lems);
 		exit(0);
 	}
 }

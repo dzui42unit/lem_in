@@ -93,10 +93,8 @@ void	ft_make_matrix(t_room *head, t_lem *lem, char *buff)
 			|| ft_strequ(buff, "") || ft_strequ(buff, "##path"))
 			ft_error();
 		if (!ft_is_comment(buff))
-		{
 			ft_process_links(lem, head, buff);
-		}
-        ft_join(lem, buff);
+		ft_join(lem, buff);
 		free(buff);
 	}
 	free(buff);

@@ -76,6 +76,7 @@ typedef struct		s_lem
 	int				end;
 	int				start_counter;
 	int				end_counter;
+	int				*lems;
 }					t_lem;
 
 uintmax_t			ft_atoi_unsigned(char *str);
@@ -105,6 +106,8 @@ void				ft_make_matrix(t_room *head, t_lem *lem, char *buff);
 void				ft_join(t_lem *lem, char *str2);
 void				put_pixel_img(t_lem *lem, int x, int y, int color);
 void				draw_line(t_lem *lem);
+void				ft_assign_lems(t_lem *lem);
+void				ft_search_parallel_paths(t_lem *lem);
 void				ft_circle_simple(t_lem *lem, int x_center, int y_center);
 void				ft_depth_first_search(t_lem *lem,
 						t_room *head_room, int *visited, t_path **head_path);
@@ -113,7 +116,11 @@ void				ft_assign_queue(t_lem *lem, int *queue,
 void				ft_remove_queue_elem(t_lem *lem, int *queue,
 						int size, int elem);
 void				ft_free_data(t_lem *lem);
+int					ft_make_step(t_lem *lem, t_path *start,
+						t_room *cur, uintmax_t index);
 void				ft_print_lems_in_rooms(t_lem *lem, t_room *room);
+void				ft_move_thread(t_lem *lem, t_path *start,
+						t_room *head, uintmax_t index);
 void				ft_remove_last_visited(t_lem *lem, int *visited);
 void				img_clear(t_lem *lem);
 void				ft_draw_nodes(t_lem *lem, t_room *head);
@@ -149,5 +156,6 @@ int					my_key_func(int key_code, t_lem *lem);
 int					ft_draw_graph(t_lem *lem);
 int					ft_visual(t_lem *lem);
 int					ft_position_in_path(t_lem *lem, t_path *path, int room);
+int					ft_present_room_in_path(int *path, int size, int search);
 
 #endif
