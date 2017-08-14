@@ -24,7 +24,7 @@ void	ft_depth_first_search(t_lem *lem, t_room *head, int *vis, t_path **path)
 		return ;
 	}
 	ft_assign_queue(lem, queue, vis, lem->size);
-	while (queue[0] != -1 && lem->counter < 1000)
+	while (queue[0] != -1 && lem->counter < 2500)
 	{
 		current = ft_get_last_visited(lem, vis);
 		next = ft_get_last_in_queue(queue, lem->size);

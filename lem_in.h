@@ -17,7 +17,6 @@
 # include "libft/get_next_line.h"
 # include "minilibx_macos/mlx.h"
 # include <stdlib.h>
-# include <limits.h>
 # include <unistd.h>
 # include <math.h>
 # define WIDTH 1920
