@@ -20,10 +20,13 @@ void	ft_move_thread(t_lem *lem, t_path *start,
 	current_room = ft_where_the_ant_is(head, index + 1);
 	while (start)
 	{
-		if (ft_make_step(lem, start, current_room, index))
+		if (start->active == 1)
 		{
-			lem->flag = 1;
-			break ;
+			if (ft_make_step(lem, start, current_room, index))
+			{
+				lem->flag = 1;
+				break ;
+			}
 		}
 		start = start->next;
 	}

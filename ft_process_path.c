@@ -75,6 +75,7 @@ t_path	*ft_create_path(t_lem *lem, int *visited)
 			len++;
 		i++;
 	}
+	node->active = 1;
 	node->length = len;
 	node->next = NULL;
 	return (node);

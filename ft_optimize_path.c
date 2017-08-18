@@ -25,33 +25,6 @@ void	ft_assign_lems(t_lem *lem)
 	}
 }
 
-void	ft_delete_path(t_path **path, t_path **current)
-{
-	t_path *prev;
-	t_path *head;
-
-	head = *path;
-	if (head == *current)
-	{
-		if (head == NULL)
-			return ;
-		head->path = head->next->path;
-		head->next = head->next->next;
-		free((*current)->path);
-		free((*current));
-		return ;
-	}
-	prev = *path;
-	while (prev->next && prev->next != *current)
-		prev = prev->next;
-	if (prev->next == NULL)
-		return ;
-	prev->next = prev->next->next;
-	free((*current)->path);
-	free((*current));
-	return ;
-}
-
 int		ft_present_room_in_path(int *path, int size, int search)
 {
 	int i;
@@ -86,7 +59,7 @@ void	ft_search_parallel_paths(t_lem *lem)
 			while (go)
 			{
 				if (ft_present_room_in_path(go->path, lem->size, st->path[i]))
-					ft_delete_path(&(lem->path), &(go));
+					go->active = 0;
 				go = go->next;
 			}
 			i++;

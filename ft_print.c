@@ -41,10 +41,13 @@ void	ft_print_path(t_lem *lem, t_room *head, t_path *head_path)
 	ft_printf("\n");
 	while (current)
 	{
-		ft_printf("path #%d\n", counter + 1);
-		ft_print_parts(lem, current, head);
-		counter++;
+		if (current->active)
+		{
+			ft_printf("path #%d\n", counter + 1);
+			ft_print_parts(lem, current, head);
+			ft_printf("\n");
+			counter++;
+		}
 		current = current->next;
-		ft_printf("\n");
 	}
 }

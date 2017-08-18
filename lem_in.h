@@ -39,6 +39,7 @@ typedef struct		s_path
 	struct s_path	*next;
 	int				*path;
 	int				length;
+	int				active;
 }					t_path;
 
 typedef struct		s_lem
