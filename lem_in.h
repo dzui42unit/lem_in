@@ -15,12 +15,12 @@
 # include "libft/ft_printf.h"
 # include "libft/libft.h"
 # include "libft/get_next_line.h"
-# include "minilibx_macos/mlx.h"
+# include "libmlx/mlx.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <math.h>
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 1024
+# define HEIGHT 640
 
 typedef struct		s_room
 {
