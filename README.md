@@ -5,6 +5,8 @@ and moves to be taken by the ants.
 
 How to complile: gcc *.c libft/*.c -lmlx -lXext -lX11 -L ./libmlx/ -I ./libmlx/ -lm
 
+usage: ./a.out < maps/name_of_file.txt
+
 ##visual instruction makes a visualizer of the program (it should be set in the file)
 
 * Your program will receive the data describing the ant farm from the standard output
